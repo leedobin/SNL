@@ -8,6 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp">
         <ImageButton
+            android:id="@+id/backBtn"
             android:layout_width="wrap_content"
             android:layout_marginLeft="16dp"
             android:src="@drawable/ic_back"
@@ -34,6 +35,7 @@
             android:layout_width="0dp"
             android:layout_weight="1"
             android:hint="이메일"
+            android:inputType="textEmailAddress"
             android:textSize="15dp"
             android:padding="5dp"
             android:background="@drawable/email_insert_form"
@@ -67,6 +69,7 @@
             android:layout_weight="1"
             android:hint="인증번호"
             android:textSize="15dp"
+            android:inputType="number"
             android:padding="5dp"
             android:background="@drawable/email_insert_form"
             android:layout_height="match_parent" />

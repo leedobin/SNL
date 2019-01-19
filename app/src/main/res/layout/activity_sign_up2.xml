@@ -12,6 +12,7 @@
             android:layout_marginLeft="16dp"
             android:src="@drawable/ic_back"
             android:layout_centerVertical="true"
+            android:id="@+id/backBtn"
             android:background="@android:color/transparent"
             android:layout_height="wrap_content" />
 
@@ -26,6 +27,7 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_marginLeft="16dp"
+        android:inputType="textPassword"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
         android:hint="비밀번호(6글자 이상, 숫자+영문 조합)"
@@ -46,6 +48,7 @@
         <EditText
             android:layout_width="0dp"
             android:layout_weight="1"
+            android:inputType="textPassword"
             android:hint="비밀번호 확인"
             android:textSize="15dp"
             android:padding="5dp"
