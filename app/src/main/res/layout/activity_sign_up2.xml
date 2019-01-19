@@ -21,42 +21,21 @@
         <TextView
             android:layout_width="wrap_content"
             android:textSize="16dp"
-            android:text="이메일을 입력해주세요."
+            android:text="비밀번호를 입력해주세요."
             android:layout_centerInParent="true"
             android:layout_height="wrap_content" />
     </RelativeLayout>
 
-    <LinearLayout
+    <EditText
         android:layout_width="match_parent"
-        android:layout_height="50dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:orientation="horizontal">
-        <EditText
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:hint="이메일"
-            android:textSize="15dp"
-            android:padding="5dp"
-            android:background="@drawable/email_insert_form"
-            android:layout_height="match_parent" />
-        <RelativeLayout
-            android:layout_width="100dp"
-            android:background="@drawable/email_check_btn"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="중복확인"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_round_check"
-                android:layout_height="wrap_content" />
-        </RelativeLayout>
-    </LinearLayout>
+        android:hint="비밀번호(6글자 이상, 숫자+영문 조합)"
+        android:textSize="15dp"
+        android:padding="5dp"
+        android:background="@drawable/email_insert_form"
+        android:layout_height="50dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
