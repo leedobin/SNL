@@ -14,8 +14,8 @@
                         <option name="values">
                           <map>
                             <entry key="assetSourceType" value="FILE" />
-                            <entry key="outputName" value="ic_rount_check" />
-                            <entry key="sourceFile" value="$USER_HOME$/Downloads/ic_rount_check.svg" />
+                            <entry key="outputName" value="ic_spinner_down" />
+                            <entry key="sourceFile" value="$USER_HOME$/Downloads/ic_spinner_down.svg" />
                           </map>
                         </option>
                       </PersistentState>
