@@ -30,7 +30,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_margin="5dp"
-        android:id="@+id/firstAuthLayout"
+        android:id="@+id/firstLicenseLayout"
         android:background="@drawable/gray_round_border_box">
 
         <TextView
@@ -46,6 +46,7 @@
             android:layout_margin="15dp"
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:id="@+id/firstFowardIv"
             android:src="@drawable/ic_forward"/>
     </LinearLayout>
 
@@ -54,7 +55,7 @@
         android:layout_height="50dp"
         android:orientation="horizontal"
         android:layout_margin="5dp"
-        android:id="@+id/secondAuthLayout"
+        android:id="@+id/secondLicenseLayout"
         android:background="@drawable/gray_round_border_box">
 
         <TextView
@@ -70,6 +71,7 @@
             android:layout_margin="15dp"
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
+            android:id="@+id/secondFowardIv"
             android:src="@drawable/ic_forward"/>
     </LinearLayout>
 
