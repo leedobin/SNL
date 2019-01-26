@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginActivity">
+        <activity android:name=".AuthPopUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,6 +23,9 @@
         <activity android:name=".SignUp3Activity" />
         <activity android:name=".SetDefaultCategoryPopup"
             android:theme="@android:style/Theme.Dialog"></activity>
+        <activity android:name=".LoginActivity"/>
     </application>
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
 </manifest>
