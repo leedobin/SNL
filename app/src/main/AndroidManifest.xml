@@ -19,8 +19,10 @@
         <activity android:name=".LicenseActivity" />
         <activity android:name=".SignUp1Activity" />
         <activity android:name=".SignUp2Activity" />
-        <activity android:name=".LicenseDetailActivity"/>
-        <activity android:name=".SignUp3Activity"/>
+        <activity android:name=".LicenseDetailActivity" />
+        <activity android:name=".SignUp3Activity" />
+        <activity android:name=".SetDefaultCategoryPopup"
+            android:theme="@android:style/Theme.Dialog"></activity>
     </application>
 
 </manifest>
