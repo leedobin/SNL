@@ -1,4 +1,4 @@
-package com.four_leader.snl;
+package com.four_leader.snl.signup.adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -7,16 +7,18 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.four_leader.snl.R;
+
 import java.util.List;
 
-public class SpinnerAdapter extends BaseAdapter {
+public class LanguageSpinnerAdapter extends BaseAdapter {
 
     Context context;
     List<String> data;
     LayoutInflater inflater;
 
 
-    public SpinnerAdapter(Context context, List<String> data){
+    public LanguageSpinnerAdapter(Context context, List<String> data){
         this.context = context;
         this.data = data;
         inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -1,4 +1,4 @@
-package com.four_leader.snl;
+package com.four_leader.snl.license.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.TextView;
+
+import com.four_leader.snl.R;
 
 public class LicenseDetailActivity extends AppCompatActivity {
 

@@ -1,4 +1,4 @@
-package com.four_leader.snl;
+package com.four_leader.snl.license.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -7,6 +7,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+
+import com.four_leader.snl.R;
+import com.four_leader.snl.signup.activity.SignUp1Activity;
 
 public class LicenseActivity extends AppCompatActivity {
 

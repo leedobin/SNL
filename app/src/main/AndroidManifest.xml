@@ -4,6 +4,7 @@
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:allowBackup="true"
@@ -12,23 +13,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AuthPopUp">
+        <activity android:name=".onetime.AuthPopUp">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LicenseActivity" />
-        <activity android:name=".SignUp1Activity" />
-        <activity android:name=".SignUp2Activity" />
-        <activity android:name=".LicenseDetailActivity" />
-        <activity android:name=".SignUp3Activity" />
+        <activity android:name=".license.activity.LicenseActivity" />
+        <activity android:name=".signup.activity.SignUp1Activity" />
+        <activity android:name=".signup.activity.SignUp2Activity" />
+        <activity android:name=".license.activity.LicenseDetailActivity" />
+        <activity android:name=".signup.activity.SignUp3Activity" />
         <activity
-            android:name=".SetDefaultCategoryPopup"
+            android:name=".onetime.SetDefaultCategoryPopup"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".LoginActivity" />
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".login.activity.LoginActivity" />
+        <activity android:name=".main.activity.MainActivity"></activity>
     </application>
 
 </manifest>
