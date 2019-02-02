@@ -24,6 +24,7 @@ public class AuthPopUp extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.popup_auth);
 
+
         nextBtn = findViewById(R.id.nextBtn);
 
 

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/ic_back"
+            android:id="@+id/backBtn"
+            android:layout_centerVertical="true"
+            android:background="@android:color/transparent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:textSize="16dp"
+            android:text="세부정보를 입력해주세요."
+            android:layout_centerInParent="true"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:inputType="text"
+            android:hint="닉네임"
+            android:textSize="15dp"
+            android:padding="5dp"
+            android:background="@drawable/email_insert_form"
+            android:layout_height="match_parent" />
+        <RelativeLayout
+            android:layout_width="100dp"
+            android:background="@drawable/email_check_btn"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="중복확인"
+                android:layout_height="wrap_content" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/ic_round_check"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <Spinner
+        android:id="@+id/languageSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@drawable/gray_round_border_box"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"/>
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:inputType="text"
+        android:layout_marginTop="16dp"
+        android:hint="추천인 닉네임"
+        android:textSize="15dp"
+        android:padding="5dp"
+        android:background="@drawable/gray_round_border_box"
+        android:layout_height="50dp" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_margin="16dp"
+        android:id="@+id/signupBtn"
+        android:background="#cdcdcd"
+        android:text="가입하기"
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>
