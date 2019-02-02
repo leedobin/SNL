@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.four_leader.snl">
 
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -21,11 +24,11 @@
         <activity android:name=".SignUp2Activity" />
         <activity android:name=".LicenseDetailActivity" />
         <activity android:name=".SignUp3Activity" />
-        <activity android:name=".SetDefaultCategoryPopup"
-            android:theme="@android:style/Theme.Dialog"></activity>
-        <activity android:name=".LoginActivity"/>
+        <activity
+            android:name=".SetDefaultCategoryPopup"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity"></activity>
     </application>
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
 </manifest>
