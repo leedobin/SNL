@@ -43,7 +43,8 @@
         <RelativeLayout
             android:layout_width="100dp"
             android:background="@drawable/email_check_btn"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/checkId">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
