@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -17,6 +18,7 @@ public class SetDefaultCategoryPopup extends Activity {
     GridView gridView;
     ArrayList<DefaultCategory> categories;
     SetDefaultCategoryAdapter setDefaultCategoryAdapter;
+    Button okBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,8 @@ public class SetDefaultCategoryPopup extends Activity {
         setContentView(R.layout.popup_set_default_category);
 
         gridView = findViewById(R.id.gridView);
+        okBtn = findViewById(R.id.okBtn);
+
         categories = new ArrayList<>();
 
         for (int i = 1; i <= 20; i++) {
@@ -49,6 +53,22 @@ public class SetDefaultCategoryPopup extends Activity {
             }
         });
 
+        okBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedCount = 0;
+                for(int i=0; i<categories.size(); i++) {
+                    if(categories.get(i).getChecked()) {
+                        selectedCount += 1;
+                    }
+                }
+                if(selectedCount > 0) {
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "카테고리를 1개 이상 선택해주세요.", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     private int getCheckedItemCount() {

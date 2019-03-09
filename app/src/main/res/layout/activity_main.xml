@@ -7,12 +7,15 @@
         android:id="@+id/categoryListView"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_margin="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:scrollbars="vertical" />
 
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_width="match_parent"
         android:layout_height="40dp"
@@ -55,15 +58,25 @@
             android:src="@drawable/ic_menu" />
     </LinearLayout>
 
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_above="@+id/bottomLayout"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/searchLayout"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:divider="#cdcdcd"
+        android:dividerHeight="3dp" />
+
     <LinearLayout
-        android:layout_width="200dp"
+        android:layout_width="wrap_content"
         android:id="@+id/setLayout"
-        android:visibility="gone"
         android:layout_marginRight="10dp"
-        android:layout_height="150dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/searchLayout"
-        android:background="#cdcdcd"
+        android:background="#CC000000"
         android:orientation="vertical"
         android:padding="10dp">
 
@@ -72,24 +85,26 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:gravity="center"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="글"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"></LinearLayout>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="음성"
                 android:textColor="#ffffff"
@@ -100,57 +115,143 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
+            android:id="@+id/view1"
             android:gravity="center"
+            android:layout_marginBottom="10dp"
             android:orientation="horizontal">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="최신"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
-                android:layout_weight="1"></LinearLayout>
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" />
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="50dp"
+                android:gravity="center"
                 android:layout_height="wrap_content"
                 android:text="인기"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
         </LinearLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:id="@+id/view2"
+            android:gravity="center"
+            android:layout_marginBottom="10dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="My"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+
+            <Switch
+                android:layout_width="wrap_content"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:layout_width="50dp"
+                android:gravity="center"
+                android:layout_height="wrap_content"
+                android:text="Other"
+                android:textColor="#ffffff"
+                android:textSize="15sp" />
+        </LinearLayout>
+
+
         <Button
             android:layout_width="match_parent"
             android:layout_height="30dp"
+            android:id="@+id/setContentOptionBtn"
             android:background="#cdcdcd"
             android:text="OK"
             android:textSize="15sp" />
     </LinearLayout>
 
-    <ListView
-        android:id="@+id/listView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/searchLayout"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:divider="#cdcdcd"
-        android:dividerHeight="3dp" />
-
     <ImageButton
         android:layout_width="40dp"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/searchLayout"
         android:layout_centerInParent="true"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
         android:src="@drawable/ic_top_arrow"
         android:background="@drawable/orange_circle"
         android:layout_height="40dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/bottomLayout"
+        android:src="#cdcdcd"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:id="@+id/bottomLayout"
+        android:layout_height="50dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal">
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:textStyle="bold"
+            android:layout_weight="1"
+            android:id="@+id/mainBtn"
+            android:text="글"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:text="서재"
+            android:id="@+id/libraryBtn"
+            android:layout_height="match_parent" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:id="@+id/noticeBtn"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/noticeText"
+                android:layout_width="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="알림"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="3dp"
+                android:src="@drawable/circle_notice"
+                android:layout_toRightOf="@+id/noticeText"
+                android:layout_height="wrap_content" />
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:id="@+id/settingBtn"
+            android:text="관리"
+            android:layout_height="match_parent" />
+    </LinearLayout>
 
 
 </RelativeLayout>

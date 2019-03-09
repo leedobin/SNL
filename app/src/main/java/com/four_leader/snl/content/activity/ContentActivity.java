@@ -1,5 +1,6 @@
 package com.four_leader.snl.content.activity;
 
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
@@ -21,7 +22,7 @@ public class ContentActivity extends AppCompatActivity {
     ArrayList<Voice> voices;
     VoiceAdapter adapter;
     LinearLayout playView;
-    ImageButton closePlayViewBtn, backBtn;
+    ImageButton closePlayViewBtn, backBtn, recordBtn;
     ListView listView;
 
     @Override
@@ -33,6 +34,7 @@ public class ContentActivity extends AppCompatActivity {
         closePlayViewBtn = findViewById(R.id.closePlayViewBtn);
         listView = findViewById(R.id.listView);
         backBtn = findViewById(R.id.backBtn);
+        recordBtn = findViewById(R.id.recordBtn);
 
         voices = new ArrayList<>();
         getContentInfo(getIntent().getStringExtra("code"));
@@ -50,6 +52,14 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 finish();
+            }
+        });
+
+        recordBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, RecordActivity.class);
+                startActivity(intent);
             }
         });
     }

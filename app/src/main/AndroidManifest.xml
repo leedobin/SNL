@@ -30,7 +30,8 @@
             android:theme="@android:style/Theme.Dialog" />
         <activity android:name=".login.activity.LoginActivity" />
         <activity android:name=".main.activity.MainActivity" />
-        <activity android:name=".content.activity.ContentActivity"></activity>
+        <activity android:name=".content.activity.ContentActivity" />
+        <activity android:name=".content.activity.RecordActivity"></activity>
     </application>
 
 </manifest>

@@ -47,7 +47,7 @@
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:id="@+id/firstFowardIv"
-            android:src="@drawable/ic_forward"/>
+            android:src="@drawable/ic_next"/>
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +72,7 @@
             android:layout_gravity="center_vertical"
             android:layout_height="wrap_content"
             android:id="@+id/secondFowardIv"
-            android:src="@drawable/ic_forward"/>
+            android:src="@drawable/ic_next"/>
     </LinearLayout>
 
     <LinearLayout

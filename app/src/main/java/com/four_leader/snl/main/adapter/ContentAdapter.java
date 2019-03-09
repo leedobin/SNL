@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.main.vo.MainContent;
-import com.four_leader.snl.onetime.DefaultCategory;
 
 import java.util.ArrayList;
 

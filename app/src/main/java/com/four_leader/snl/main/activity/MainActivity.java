@@ -3,6 +3,7 @@ package com.four_leader.snl.main.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -13,8 +14,10 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.SpinnerAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
@@ -23,6 +26,7 @@ import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.DefaultCategory;
 import com.four_leader.snl.main.vo.MainContent;
+import com.four_leader.snl.onetime.SetDefaultCategoryPopup;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,19 +43,34 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     ImageButton setBtn;
-    LinearLayout setLayout;
+    LinearLayout setLayout, view1, view2;
     ContentAdapter contentAdapter;
+    Button setContentOptionBtn;
+    TextView mainBtn, libraryBtn, settingBtn;
+    RelativeLayout noticeBtn;
+
+    boolean isFirstAccess = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainBtn = findViewById(R.id.mainBtn);
+        libraryBtn = findViewById(R.id.libraryBtn);
+        settingBtn = findViewById(R.id.settingBtn);
+        noticeBtn = findViewById(R.id.noticeBtn);
+
         categoryListView = findViewById(R.id.categoryListView);
         searchSpinner = findViewById(R.id.searchSpinner);
         listView = findViewById(R.id.listView);
         setBtn = findViewById(R.id.setBtn);
         setLayout = findViewById(R.id.setLayout);
+        setContentOptionBtn = findViewById(R.id.setContentOptionBtn);
+        view1 = findViewById(R.id.view1);
+        view2 = findViewById(R.id.view2);
+
+        setLayout.setVisibility(View.GONE);
 
         searchType = new ArrayList<>();
         searchType.add("글제목");
@@ -59,6 +78,65 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, searchType);
         searchSpinner.setAdapter(spinnerAdapter);
 
+        // 가입 후 첫 접속이면 카테고리 설정하도록 하기
+        if(isFirstAccess) {
+            Intent intent = new Intent(MainActivity.this, SetDefaultCategoryPopup.class);
+            startActivityForResult(intent, 0);
+        } else {
+            getMainPage();
+        }
+
+        setBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(setLayout.getVisibility() == View.VISIBLE) {
+                    setLayout.setVisibility(View.GONE);
+                } else {
+                    setLayout.setVisibility(View.VISIBLE);
+                    setLayout.setFocusable(true);
+                }
+            }
+        });
+
+        setContentOptionBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setLayout.setVisibility(View.GONE);
+            }
+        });
+
+        mainBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getMainPage();
+            }
+        });
+
+        libraryBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getLibraryPage();
+            }
+        });
+
+    }
+
+    private void getMainPage() {
+        categoryListView.setVisibility(View.VISIBLE);
+        view1.setVisibility(View.VISIBLE);
+        view2.setVisibility(View.GONE);
+
+        getCategories();
+        getContents();
+    }
+
+    private void getLibraryPage() {
+        categoryListView.setVisibility(View.GONE);
+        view1.setVisibility(View.GONE);
+        view2.setVisibility(View.VISIBLE);
+    }
+
+    private void getCategories() {
         categories = new ArrayList<>();
         categories.add(new DefaultCategory("명언1", "1", true));
         categories.add(new DefaultCategory("명언2", "2", false));
@@ -68,27 +146,14 @@ public class MainActivity extends AppCompatActivity {
         categories.add(new DefaultCategory("명언6", "6", false));
         categoryAdapter = new CategoryAdapter(getApplicationContext(), categories);
         categoryListView.setAdapter(categoryAdapter);
-
-        contents = new ArrayList<>();
-        getContents();
-
-        contentAdapter = new ContentAdapter(getApplicationContext(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
-        listView.setAdapter(contentAdapter);
-
-        setBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(setLayout.getVisibility() == View.VISIBLE) {
-                    setLayout.setVisibility(View.GONE);
-                } else {
-                    setLayout.setVisibility(View.VISIBLE);
-                }
-            }
-        });
     }
 
     //# 서버에서 값 받아오게 수정해야 함
     private void getContents() {
+        contents = new ArrayList<>();
+        contentAdapter = new ContentAdapter(getApplicationContext(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
+        listView.setAdapter(contentAdapter);
+
         for(int i=0; i<10; i++) {
             MainContent content = new MainContent();
             content.setCode(String.valueOf(i));
@@ -144,4 +209,12 @@ public class MainActivity extends AppCompatActivity {
         }
     };
 
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 0) { // 기본 카테고리 설정 팝업
+            getMainPage();
+        }
+    }
 }
