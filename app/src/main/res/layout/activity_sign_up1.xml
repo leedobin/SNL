@@ -38,6 +38,7 @@
             android:inputType="textEmailAddress"
             android:textSize="15dp"
             android:padding="5dp"
+            android:id="@+id/eMail"
             android:background="@drawable/email_insert_form"
             android:layout_height="match_parent" />
         <RelativeLayout

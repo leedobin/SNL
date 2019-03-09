@@ -57,6 +57,7 @@ public class LicenseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(LicenseActivity.this, SignUp1Activity.class);
                 startActivity(intent);
+                finish();
             }
         });
     }
