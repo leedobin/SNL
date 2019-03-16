@@ -72,6 +72,7 @@
             android:hint="인증번호"
             android:textSize="15dp"
             android:inputType="number"
+            android:id="@+id/authEdt"
             android:padding="5dp"
             android:background="@drawable/email_insert_form"
             android:layout_height="match_parent" />

@@ -33,6 +33,7 @@
         android:hint="비밀번호(6글자 이상, 숫자+영문 조합)"
         android:textSize="15dp"
         android:padding="5dp"
+        android:id="@+id/pwEdt"
         android:background="@drawable/gray_round_border_box"
         android:layout_height="50dp" />
 
@@ -51,6 +52,7 @@
             android:inputType="textPassword"
             android:hint="비밀번호 확인"
             android:textSize="15dp"
+            android:id="@+id/pwEdt2"
             android:padding="5dp"
             android:background="@android:color/transparent"
             android:layout_height="match_parent" />
