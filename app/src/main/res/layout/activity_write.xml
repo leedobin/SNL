@@ -25,6 +25,14 @@
             android:text="글 쓰기"
             android:textSize="18dp" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="저장"
+            android:layout_toLeftOf="@+id/writeBtn"
+            android:layout_marginRight="10dp"
+            android:layout_height="wrap_content" />
+
         <ImageButton
             android:id="@+id/writeBtn"
             android:layout_width="wrap_content"
@@ -123,8 +131,20 @@
         android:layout_weight="1"
         android:background="@drawable/rect_round_gray"
         android:gravity="top"
+        android:textSize="15dp"
         android:hint="내용을 입력해주세요."
         android:padding="5dp" />
+
+    <EditText
+        android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/rect_round_gray"
+        android:padding="5dp"
+        android:hint="해시태그"
+        android:textSize="13dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="30dp" />
 
     <TextView
         android:layout_width="match_parent"

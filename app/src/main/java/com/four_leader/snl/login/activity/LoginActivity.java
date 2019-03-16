@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.four_leader.snl.container.activity.ContainerActivity;
 import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.R;
 import com.four_leader.snl.license.activity.LicenseActivity;
@@ -38,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
                 * 3. 알림 카운트
                 * 4. 보유 칭호
                 * */
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
                 startActivity(intent);
             }
         });

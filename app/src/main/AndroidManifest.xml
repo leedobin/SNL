@@ -33,7 +33,13 @@
         <activity android:name=".content.activity.ContentActivity" />
         <activity android:name=".content.activity.RecordActivity" />
         <activity android:name=".write.activity.WriteActivity" />
-        <activity android:name=".write.activity.WriteTermsActivity"></activity>
+        <activity android:name=".write.activity.WriteTermsActivity" />
+        <activity
+            android:name=".onetime.PushAuthActivity"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity android:name=".notice.activity.NoticeActivity" />
+        <activity android:name=".setting.activity.SettingActivity" />
+        <activity android:name=".container.activity.ContainerActivity" />
     </application>
 
 </manifest>
