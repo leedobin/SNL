@@ -24,7 +24,7 @@ public class SignUp1Activity extends AppCompatActivity {
     private ImageButton backBtn;
     private EditText eMailEdt;
     private int REQUEST_CODE = 200;
-    private RelativeLayout relativeLayout;
+    private RelativeLayout relativeLayout, relativeLayout2;
     private ConnectAPI connectAPI;
 
     private String url = "http://13.209.4.115/SNL/idcheck.php";
@@ -39,7 +39,7 @@ public class SignUp1Activity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         eMailEdt = findViewById(R.id.eMail);
         relativeLayout = findViewById(R.id.checkId);
-
+        relativeLayout2 = findViewById(R.id.sendEmail);
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +62,6 @@ public class SignUp1Activity extends AppCompatActivity {
                     String result = connectAPI.execute(new String[]{url, "id="+id}).get();
 
                     connectAPI.onPostExecute("");
-                    Log.i("tagtt" , "result : " + result);
 
                    JSONObject jsonObject = new JSONObject(result);
                    JSONArray jArrObject  = jsonObject.getJSONArray("REPORT");
@@ -81,6 +80,22 @@ public class SignUp1Activity extends AppCompatActivity {
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
+            }
+        });
+
+        relativeLayout2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+                emailIntent.putExtra(Intent.EXTRA_EMAIL,
+                        new String[]{"garam1362@naver.com","dlehqls369@naver.com"});
+
+                emailIntent.setType("plain/text");
+                emailIntent.putExtra(Intent.EXTRA_SUBJECT,"SNL 인증번호");
+                emailIntent.putExtra(Intent.EXTRA_TEXT,"인증 번호 : 임가람");
+                startActivity(emailIntent);
+
             }
         });
 
