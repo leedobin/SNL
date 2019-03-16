@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_height="match_parent">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -22,8 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="약관명"
-            android:id="@+id/licenseTitleTv"
+            android:text="글 쓰기 약관"
             android:textSize="18dp" />
 
 
@@ -40,19 +39,23 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
-
-        <TextView
-            android:layout_margin="10dp"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/licenseDetailTv"/>
-
+            android:orientation="vertical"
+            android:padding="10dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="match_parent"
+                android:text="sadkadad;sakld;clmx"
+                android:layout_height="match_parent" />
+        </LinearLayout>
     </ScrollView>
 
-    <CheckBox
+    <Button
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:id="@+id/agreeCheckBox"
-        android:text="동의합니다"/>
+        android:id="@+id/okBtn"
+        android:text="동의합니다."
+        android:background="#cdcdcd"
+        android:layout_height="50dp" />
 
 </LinearLayout>

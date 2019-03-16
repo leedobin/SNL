@@ -3,6 +3,7 @@ package com.four_leader.snl.main.adapter;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,15 +50,16 @@ public class ContentAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
             convertView = inflater.inflate(R.layout.list_content, null);
             convertView.setTag(holder);
+        } else {
+            holder = (ViewHolder) convertView.getTag();
         }
 
-        holder = (ViewHolder) convertView.getTag();
         holder.playView = convertView.findViewById(R.id.playView);
         holder.playBtn = convertView.findViewById(R.id.playBtn);
         holder.itemLayout = convertView.findViewById(R.id.itemLayout);
@@ -73,6 +75,16 @@ public class ContentAdapter extends BaseAdapter {
         holder.bookmarkText = convertView.findViewById(R.id.bookmarkText);
         holder.bookmarkView = convertView.findViewById(R.id.bookmarkView);
 
+        if(String.valueOf(position).equals("")) {
+            Log.i("dadada", "에러래ㅠㅠ");
+        } else {
+            Log.i("dadada", String.valueOf(position));
+        }
+
+        holder.playBtn.setTag(position);
+        holder.itemLayout.setTag(position);
+        holder.bookmarkView.setTag(position);
+
         MainContent data = arrayList.get(position);
 
         holder.categoryText.setText(data.getCategory());
@@ -84,12 +96,6 @@ public class ContentAdapter extends BaseAdapter {
         holder.heartText.setText(String.valueOf(data.getHeartCount()));
         holder.commentText.setText(String.valueOf(data.getVoiceCount()));
         holder.bookmarkText.setText(String.valueOf(data.getBookmarkCount()));
-
-        holder.playBtn.setTag(position);
-        holder.itemLayout.setTag(position);
-        holder.bookmarkView.setTag(position);
-
-
 
         if(data.isPlayLayoutOpen()) {
             holder.playView.setVisibility(View.VISIBLE);
@@ -124,17 +130,14 @@ public class ContentAdapter extends BaseAdapter {
             }
         });
 
-
         return convertView;
     }
 
     public class ViewHolder {
         public TextView categoryText, endDateText, titleText, contentText,
-        nameText, dateText, heartText, commentText, bookmarkText;
+                nameText, dateText, heartText, commentText, bookmarkText;
         public LinearLayout playView;
         public ImageButton playBtn;
         public LinearLayout itemLayout, bookmarkView;
     }
-
-
 }

@@ -1,5 +1,6 @@
 package com.four_leader.snl.main.activity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
@@ -27,11 +28,12 @@ import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.DefaultCategory;
 import com.four_leader.snl.main.vo.MainContent;
 import com.four_leader.snl.onetime.SetDefaultCategoryPopup;
+import com.four_leader.snl.write.activity.WriteActivity;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends Activity {
 
     ArrayList<DefaultCategory> categories;
     RecyclerView categoryListView;
@@ -43,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
 
     ListView listView;
     ImageButton setBtn;
-    LinearLayout setLayout, view1, view2;
+    LinearLayout setLayout, view1, view2, writeBtn;
     ContentAdapter contentAdapter;
     Button setContentOptionBtn;
     TextView mainBtn, libraryBtn, settingBtn;
@@ -60,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
         libraryBtn = findViewById(R.id.libraryBtn);
         settingBtn = findViewById(R.id.settingBtn);
         noticeBtn = findViewById(R.id.noticeBtn);
+        writeBtn = findViewById(R.id.writeBtn);
 
         categoryListView = findViewById(R.id.categoryListView);
         searchSpinner = findViewById(R.id.searchSpinner);
@@ -69,11 +72,13 @@ public class MainActivity extends AppCompatActivity {
         setContentOptionBtn = findViewById(R.id.setContentOptionBtn);
         view1 = findViewById(R.id.view1);
         view2 = findViewById(R.id.view2);
+        categories = new ArrayList<>();
+        contents = new ArrayList<>();
 
         setLayout.setVisibility(View.GONE);
-
         searchType = new ArrayList<>();
         searchType.add("글제목");
+        searchType.add("글내용");
         searchType.add("작성자");
         ArrayAdapter spinnerAdapter = new ArrayAdapter(this, R.layout.support_simple_spinner_dropdown_item, searchType);
         searchSpinner.setAdapter(spinnerAdapter);
@@ -119,6 +124,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        writeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, WriteActivity.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     private void getMainPage() {
@@ -137,22 +150,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getCategories() {
-        categories = new ArrayList<>();
+        categories.clear();
         categories.add(new DefaultCategory("명언1", "1", true));
         categories.add(new DefaultCategory("명언2", "2", false));
         categories.add(new DefaultCategory("명언3", "3", false));
         categories.add(new DefaultCategory("명언4", "4", false));
         categories.add(new DefaultCategory("명언5", "5", false));
         categories.add(new DefaultCategory("명언6", "6", false));
+
         categoryAdapter = new CategoryAdapter(getApplicationContext(), categories);
         categoryListView.setAdapter(categoryAdapter);
     }
 
     //# 서버에서 값 받아오게 수정해야 함
     private void getContents() {
-        contents = new ArrayList<>();
-        contentAdapter = new ContentAdapter(getApplicationContext(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
-        listView.setAdapter(contentAdapter);
+        contents.clear();
 
         for(int i=0; i<10; i++) {
             MainContent content = new MainContent();
@@ -169,6 +181,9 @@ public class MainActivity extends AppCompatActivity {
             content.setFileName("190223135932");
             contents.add(content);
         }
+
+        contentAdapter = new ContentAdapter(getApplicationContext(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
+        listView.setAdapter(contentAdapter);
     }
 
     Handler togglePlayLayoutHandler = new Handler() {

@@ -194,6 +194,21 @@
         android:background="@drawable/orange_circle"
         android:layout_height="40dp" />
 
+    <LinearLayout
+        android:layout_width="50dp"
+        android:layout_above="@+id/bottomLayout"
+        android:background="@drawable/circle_write_btn"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:id="@+id/writeBtn"
+        android:gravity="center"
+        android:layout_height="50dp">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_plus"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1dp"
