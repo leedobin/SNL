@@ -22,6 +22,7 @@ public class SignUp2Activity extends AppCompatActivity {
     private EditText pwEdt, pwEdt2;
     private ImageButton backBtn;
     private int REQUEST_CODE = 200;
+    private Intent preIntent;
     String pwPattern = "^(?=.*\\d)(?=.*[a-z]).{6,15}$";
 
 
@@ -34,6 +35,9 @@ public class SignUp2Activity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         pwEdt = findViewById(R.id.pwEdt);
         pwEdt2 = findViewById(R.id.pwEdt2);
+        preIntent = getIntent();
+
+
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -42,6 +46,8 @@ public class SignUp2Activity extends AppCompatActivity {
 
                 if(matcher.matches()){
                     if(pwEdt.getText().toString().equals(pwEdt2.getText().toString())){
+                        intent.putExtra("email",preIntent.getStringExtra("email"));
+                        intent.putExtra("pwd",pwEdt.getText().toString());
                         startActivityForResult(intent, REQUEST_CODE);
                     }else{
                         Toast.makeText(getApplicationContext(),"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
