@@ -3,17 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/categoryListView"
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:scrollbars="horizontal" />
-
     <LinearLayout
         android:id="@+id/searchLayout"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/categoryListView"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
         android:layout_marginTop="10dp"
@@ -110,6 +103,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/view2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_marginBottom="10dp"
@@ -121,7 +115,7 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="최신"
+                android:text="My"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
 
@@ -135,10 +129,11 @@
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="인기"
+                android:text="Other"
                 android:textColor="#ffffff"
                 android:textSize="15sp" />
         </LinearLayout>
+
 
         <Button
             android:id="@+id/setContentOptionBtn"

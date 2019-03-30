@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.main.activity.MainActivity;
+import com.four_leader.snl.main.fragment.LibraryFragment;
 import com.four_leader.snl.main.fragment.MainFragment;
 import com.four_leader.snl.notice.fragment.NoticeFragment;
 import com.four_leader.snl.onetime.PushAuthActivity;
@@ -20,7 +21,9 @@ import com.four_leader.snl.setting.fragment.SettingFragment;
 
 public class ContainerActivity extends AppCompatActivity {
 
+    FragmentManager fm;
     MainFragment mainFragment;
+    LibraryFragment libraryFragment;
     NoticeFragment noticeFragment;
     SettingFragment settingFragment;
 
@@ -44,19 +47,13 @@ public class ContainerActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 getMainPage();
-                FragmentManager fm = getSupportFragmentManager();
-                MainFragment fragment = (MainFragment)fm.findFragmentById(R.id.frameLayout);
-                fragment.getMainPage();
             }
         });
 
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getMainPage();
-                FragmentManager fm = getSupportFragmentManager();
-                MainFragment fragment = (MainFragment)fm.findFragmentById(R.id.frameLayout);
-                fragment.getLibraryPage();
+                getLibraryPage();
             }
         });
 
@@ -77,7 +74,10 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void init() {
+        fm = getSupportFragmentManager();
+
         mainFragment = MainFragment.newInstance();
+        libraryFragment = new LibraryFragment().newInstance();
         noticeFragment = new NoticeFragment().newInstance();
         settingFragment = new SettingFragment().newInstance();
 
@@ -104,6 +104,12 @@ public class ContainerActivity extends AppCompatActivity {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, mainFragment).commit();
+    }
+
+    private void getLibraryPage() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.frameLayout, libraryFragment).commit();
     }
 
     private void getNoticePage() {

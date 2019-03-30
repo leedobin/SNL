@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,28 +15,21 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.activity.ContentActivity;
-import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.DefaultCategory;
 import com.four_leader.snl.main.vo.MainContent;
-import com.four_leader.snl.notice.activity.NoticeActivity;
-import com.four_leader.snl.setting.activity.SettingActivity;
 import com.four_leader.snl.write.activity.WriteActivity;
 
 import java.util.ArrayList;
 
-public class MainFragment extends Fragment {
+public class LibraryFragment extends Fragment {
 
     ArrayList<DefaultCategory> categories;
-    RecyclerView categoryListView;
-    CategoryAdapter categoryAdapter;
     ArrayList<String> searchType;
     Spinner searchSpinner;
 
@@ -50,13 +42,13 @@ public class MainFragment extends Fragment {
     Button setContentOptionBtn;
 
 
-    public MainFragment() {
+    public LibraryFragment() {
         // Required empty public constructor
     }
 
 
-    public static MainFragment newInstance() {
-        MainFragment fragment = new MainFragment();
+    public static LibraryFragment newInstance() {
+        LibraryFragment fragment = new LibraryFragment();
         return fragment;
     }
 
@@ -69,11 +61,10 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_main, container, false);
+        View v = inflater.inflate(R.layout.fragment_library, container, false);
 
         writeBtn = v.findViewById(R.id.writeBtn);
 
-        categoryListView = v.findViewById(R.id.categoryListView);
         searchSpinner = v.findViewById(R.id.searchSpinner);
         listView = v.findViewById(R.id.listView);
         setBtn = v.findViewById(R.id.setBtn);
@@ -90,8 +81,7 @@ public class MainFragment extends Fragment {
         searchType.add("작성자");
         ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, searchType);
         searchSpinner.setAdapter(spinnerAdapter);
-
-
+        
         setBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -119,37 +109,13 @@ public class MainFragment extends Fragment {
             }
         });
 
-        getMainPage();
+        getLibraryContents();
 
         return v;
     }
 
-    public void getMainPage() {
-        categoryListView.setVisibility(View.VISIBLE);
-
-        getCategories();
-        getMainContents();
-    }
-
-    private void getCategories() {
-        categories.clear();
-        categories.add(new DefaultCategory("명언1", "1", true));
-        categories.add(new DefaultCategory("명언2", "2", false));
-        categories.add(new DefaultCategory("명언3", "3", false));
-        categories.add(new DefaultCategory("명언4", "4", false));
-        categories.add(new DefaultCategory("명언5", "5", false));
-        categories.add(new DefaultCategory("명언6", "6", false));
-
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
-        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
-
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), categories, categoryClickHandler);
-        categoryListView.setLayoutManager(manager);
-        categoryListView.setAdapter(categoryAdapter);
-    }
-
     //# 서버에서 값 받아오게 수정해야 함
-    private void getMainContents() {
+    private void getLibraryContents() {
         contents.clear();
 
         for(int i=0; i<10; i++) {
@@ -207,19 +173,6 @@ public class MainFragment extends Fragment {
                 contents.get(msg.what).setBookmarked(!contents.get(msg.what).isBookmarked());
             }
             contentAdapter.notifyDataSetChanged();
-        }
-    };
-
-    Handler categoryClickHandler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            int position = msg.what;
-            for(int i=0; i<categories.size(); i++) {
-                categories.get(i).setChecked(false);
-            }
-            categories.get(position).setChecked(true);
-            categoryAdapter.notifyDataSetChanged();
         }
     };
 
