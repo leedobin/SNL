@@ -1,24 +1,46 @@
 package com.four_leader.snl.login.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.four_leader.snl.container.activity.ContainerActivity;
-import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.R;
 import com.four_leader.snl.license.activity.LicenseActivity;
+import com.four_leader.snl.util.APIClient;
+import com.four_leader.snl.util.APIInterface;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
     private Button signupBtn, Loginbtn;
+    private EditText editEmail, editPwd;
+    APIInterface apiInterface;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        apiInterface = APIClient.getClient().create(APIInterface.class);
+
+        editEmail = findViewById(R.id.editEmail);
+        editPwd = findViewById(R.id.editPwd);
 
         signupBtn = findViewById(R.id.signupBtn);
         signupBtn.setOnClickListener(new View.OnClickListener() {
@@ -39,8 +61,52 @@ public class LoginActivity extends AppCompatActivity {
                 * 3. 알림 카운트
                 * 4. 보유 칭호
                 * */
-                Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-                startActivity(intent);
+
+                String email = editEmail.getText().toString();
+                String pwd = editPwd.getText().toString();
+
+                if (email.equals("") || pwd.equals("")) {
+                    Toast.makeText(getApplicationContext(), "이메일 및 비밀번호를 정확히 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                doLogin(email, pwd);
+            }
+        });
+    }
+
+    private void doLogin(String email, String pwd) {
+        Call<String> call = apiInterface.doLogin(email, pwd);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
+
+                try {
+
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+                    JSONObject obj = new JSONObject(report.get(0).toString());
+                    String user_seq = obj.getString("user_seq");
+
+                    SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putString("user_seq", user_seq);
+                    editor.commit();
+
+                    Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+                    startActivity(intent);
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }

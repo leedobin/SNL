@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.four_leader.snl.R;
@@ -14,6 +15,7 @@ public class LicenseDetailActivity extends AppCompatActivity {
     private TextView licenseTitleTv;
     private TextView licenseDetailTv;
     private CheckBox agreeCheckBox;
+    private ImageButton backBtn;
 
     String intentdata;
 
@@ -25,6 +27,7 @@ public class LicenseDetailActivity extends AppCompatActivity {
         licenseTitleTv = findViewById(R.id.licenseTitleTv);
         licenseDetailTv = findViewById(R.id.licenseDetailTv);
         agreeCheckBox = findViewById(R.id.agreeCheckBox);
+        backBtn = findViewById(R.id.backBtn);
 
         intentdata = getIntent().getStringExtra("licenseSeq");
 
@@ -44,6 +47,14 @@ public class LicenseDetailActivity extends AppCompatActivity {
                     setResult(RESULT_OK, intent);
                     finish();
                 }
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setResult(RESULT_CANCELED);
+                finish();
             }
         });
     }

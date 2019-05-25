@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.signup.adapter.LanguageSpinnerAdapter;
+import com.four_leader.snl.util.APIs;
 import com.four_leader.snl.util.ConnectAPI;
 
 import org.json.JSONArray;
@@ -35,7 +36,7 @@ public class SignUp3Activity extends AppCompatActivity {
     private Intent preIntent;
     private EditText nickNameEdt;
     private ConnectAPI connectAPI;
-    private String url = "http://13.209.4.115/SNL/nicknamecheck.php";
+    private String url = APIs.nicknamecheck;
     private String nick;
     private boolean isNext;
 
@@ -77,7 +78,7 @@ public class SignUp3Activity extends AppCompatActivity {
                         connectAPI.cancel(true);
                     }
                     try {
-                        url = "http://13.209.4.115/SNL/signup.php";
+                        url = APIs.signup;
                         String email = preIntent.getStringExtra("email");
                         String pwd = preIntent.getStringExtra("pwd");
                         String lang = languageSpinner.getSelectedItem().toString();

@@ -22,20 +22,22 @@
             tools:srcCompat="@tools:sample/backgrounds/scenic" />
 
         <EditText
-            android:id="@+id/E-mail"
+            android:id="@+id/editEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Insert your E-mail"
             android:inputType="textEmailAddress"
-            android:text="Insert your E-mail" />
+            android:text="id0" />
 
         <EditText
-            android:id="@+id/Password"
+            android:id="@+id/editPwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="password"
             android:inputType="textPassword"
-            android:text="password" />
+            android:text="pw" />
 
         <LinearLayout
             android:layout_width="match_parent"

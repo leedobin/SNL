@@ -13,6 +13,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
+import com.four_leader.snl.util.APIs;
 import com.four_leader.snl.util.ConnectAPI;
 
 import org.json.JSONArray;
@@ -30,7 +31,7 @@ public class SignUp1Activity extends AppCompatActivity {
     private RelativeLayout relativeLayout, relativeLayout2;
     private ConnectAPI connectAPI;
     int number = new Random().nextInt(100000);
-    private String url = "http://13.209.4.115/SNL/idcheck.php";
+    private String url = APIs.idcheck;
     private String id;
     private boolean isNext = false;
 
@@ -52,12 +53,12 @@ public class SignUp1Activity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignUp1Activity.this, SignUp2Activity.class);
-                if(isNext && authEdt.getText().toString().equals(String.valueOf(number))){
+                //if(isNext && authEdt.getText().toString().equals(String.valueOf(number))){
                     intent.putExtra("email",eMailEdt.getText().toString());
                     startActivityForResult(intent, REQUEST_CODE);
-                }else{
-                    Toast.makeText(getApplicationContext(),"이메일 인증 또는 중복확인을 해주십시오",Toast.LENGTH_SHORT).show();
-                }
+//                }else{
+//                    Toast.makeText(getApplicationContext(),"이메일 인증 또는 중복확인을 해주십시오",Toast.LENGTH_SHORT).show();
+//                }
 
             }
         });
@@ -103,7 +104,7 @@ public class SignUp1Activity extends AppCompatActivity {
                 number = new Random().nextInt(100000);
                 try {
                     connectAPI = new ConnectAPI();
-                    url = "http://13.209.4.115/SNL/sendMail.php";
+                    url = APIs.sendMail;
                     if(connectAPI.getStatus() == AsyncTask.Status.RUNNING){
                         connectAPI.cancel(true);
                     }

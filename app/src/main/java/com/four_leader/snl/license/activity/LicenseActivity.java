@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
@@ -20,6 +21,7 @@ public class LicenseActivity extends AppCompatActivity {
     private ImageView secondFowardIv;
 
     private Button nextBtn;
+    private ImageButton backBtn;
 
     final int REQUEST_CODE = 200;
 
@@ -37,6 +39,7 @@ public class LicenseActivity extends AppCompatActivity {
         secondFowardIv = findViewById(R.id.secondFowardIv);
 
         nextBtn = findViewById(R.id.nextBtn);
+        backBtn = findViewById(R.id.backBtn);
 
         firstLicenseLayout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +60,13 @@ public class LicenseActivity extends AppCompatActivity {
             public void onClick(View v) {
                 intent = new Intent(LicenseActivity.this, SignUp1Activity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        backBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 finish();
             }
         });

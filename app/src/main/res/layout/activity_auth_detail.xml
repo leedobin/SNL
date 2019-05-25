@@ -19,11 +19,11 @@
 
 
         <TextView
+            android:id="@+id/licenseTitleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:text="약관명"
-            android:id="@+id/licenseTitleTv"
             android:textSize="18dp" />
 
 
@@ -42,17 +42,17 @@
         android:layout_weight="1">
 
         <TextView
-            android:layout_margin="10dp"
+            android:id="@+id/licenseDetailTv"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/licenseDetailTv"/>
+            android:layout_margin="10dp" />
 
     </ScrollView>
 
     <CheckBox
+        android:id="@+id/agreeCheckBox"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:id="@+id/agreeCheckBox"
-        android:text="동의합니다"/>
+        android:text="동의합니다" />
 
 </LinearLayout>

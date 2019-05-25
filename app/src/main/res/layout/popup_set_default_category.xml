@@ -32,6 +32,7 @@
         android:verticalSpacing="10dp"
         android:numColumns="3"
         android:id="@+id/gridView"
+        android:listSelector="@android:color/transparent"
         android:layout_height="200dp"/>
 
     <TextView

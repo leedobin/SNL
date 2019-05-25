@@ -44,17 +44,16 @@ public class SignUp2Activity extends AppCompatActivity {
                 Intent intent = new Intent(SignUp2Activity.this, SignUp3Activity.class);
                 Matcher matcher = Pattern.compile(pwPattern).matcher(pwEdt.getText().toString());
 
-                if(matcher.matches()){
-                    if(pwEdt.getText().toString().equals(pwEdt2.getText().toString())){
-                        intent.putExtra("email",preIntent.getStringExtra("email"));
-                        intent.putExtra("pwd",pwEdt.getText().toString());
+                if (matcher.matches()) {
+                    if (pwEdt.getText().toString().equals(pwEdt2.getText().toString())) {
+                        intent.putExtra("email", preIntent.getStringExtra("email"));
+                        intent.putExtra("pwd", pwEdt.getText().toString());
                         startActivityForResult(intent, REQUEST_CODE);
-                    }else{
-                        Toast.makeText(getApplicationContext(),"비밀번호가 일치하지 않습니다.",Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
-
-                }else{
-                    Toast.makeText(getApplicationContext(),"비밀번호 규칙에 맞게 다시 설정해 주십시오.",
+                } else {
+                    Toast.makeText(getApplicationContext(), "비밀번호 규칙에 맞게 다시 설정해 주십시오.",
                             Toast.LENGTH_SHORT).show();
                 }
             }
@@ -63,8 +62,8 @@ public class SignUp2Activity extends AppCompatActivity {
         pwEdt2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if(!pwEdt.getText().toString().equals(pwEdt2.getText().toString())){
-                    Toast.makeText(getApplicationContext(),"불일치",Toast.LENGTH_SHORT).show();
+                if (!pwEdt.getText().toString().equals(pwEdt2.getText().toString())) {
+                    //Toast.makeText(getApplicationContext(), "불일치", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -79,7 +78,9 @@ public class SignUp2Activity extends AppCompatActivity {
             }
         });
 
-        backBtn.setOnClickListener(new View.OnClickListener() {
+        backBtn.setOnClickListener(new View.OnClickListener()
+
+        {
             @Override
             public void onClick(View view) {
                 finish();
@@ -89,8 +90,8 @@ public class SignUp2Activity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == REQUEST_CODE) {
-            if(resultCode == RESULT_OK) {
+        if (requestCode == REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
             }
