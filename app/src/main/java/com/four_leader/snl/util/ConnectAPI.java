@@ -24,6 +24,7 @@ public class ConnectAPI extends AsyncTask<String[], Void, String> {
 
             url = url + "?" + id;
             Log.i("tagtt" , "url : " + url);
+            Log.i("ttt,", "sda");
             URL obj = new URL(url);
             HttpURLConnection conn = (HttpURLConnection) obj.openConnection();
 
