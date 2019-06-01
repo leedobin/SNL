@@ -1,5 +1,6 @@
 package com.four_leader.snl.container.activity;
 
+import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -28,7 +29,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -55,9 +58,8 @@ public class ContainerActivity extends AppCompatActivity {
 
         init();
 
-        // 푸쉬 동의/거절 정보가 없으면 푸쉬 동의 알람 요청 팝업 띄우기 //# 이 정보는 로그인시 boolean 값으로 받아보기
-        Intent intent = new Intent(ContainerActivity.this, PushAuthActivity.class);
-        startActivityForResult(intent, 100);
+        // 푸쉬 동의/거절 정보가 없으면 푸쉬 동의 알람 요청 팝업 띄우기
+        checkPushPermission();
 
         mainBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -65,21 +67,18 @@ public class ContainerActivity extends AppCompatActivity {
                 getMainPage();
             }
         });
-
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getLibraryPage();
             }
         });
-
         noticeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 getNoticePage();
             }
         });
-
         settingBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,6 +86,40 @@ public class ContainerActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void checkPushPermission() {
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.checkUserPermission(userSeq);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
+
+                try {
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+
+                    if(report.length() == 0) {
+                        Intent intent = new Intent(ContainerActivity.this, PushAuthActivity.class);
+                        startActivityForResult(intent, 100);
+                    } else {
+                        // 해당 유저가 보유한 카테고리 목록 조회 후 카테고리가 하나도 없으면 해당 팝업 띄워주기
+                        checkCategories();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void init() {
@@ -98,13 +131,10 @@ public class ContainerActivity extends AppCompatActivity {
         noticeFragment = new NoticeFragment().newInstance();
         settingFragment = new SettingFragment().newInstance();
 
-
         mainBtn = findViewById(R.id.mainBtn);
         libraryBtn = findViewById(R.id.libraryBtn);
         noticeBtn = findViewById(R.id.noticeBtn);
         settingBtn = findViewById(R.id.settingBtn);
-
-
     }
 
     private void checkCategories() {
@@ -124,7 +154,7 @@ public class ContainerActivity extends AppCompatActivity {
                     JSONArray report = resultObj.getJSONArray("REPORT");
 
                     myCategories.clear();
-                    for(int i=0; i<report.length(); i++) {
+                    for (int i = 0; i < report.length(); i++) {
                         JSONObject object = report.getJSONObject(i);
                         myCategories.add(
                                 new Category(object.getString("categorySeq"),
@@ -172,13 +202,20 @@ public class ContainerActivity extends AppCompatActivity {
                 .replace(R.id.frameLayout, settingFragment).commit();
     }
 
+    private void setPushPermission(boolean granted) {
+
+    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) { // 최초 접속시 push 확인
-            if(resultCode == RESULT_OK) { // 권한 허가시 권한 정보 변경
-                Toast.makeText(getApplicationContext(), "__년 __시 __분 __초에\npush 알림 수신에 동의하셨습니다.", Toast.LENGTH_SHORT).show();
+            if (resultCode == RESULT_OK) { // 권한 허가시 권한 정보 변경
+                Date d = new Date();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM시 dd분 ss초");
+                String time = sdf.format(d);
+
+                Toast.makeText(getApplicationContext(), time + "에\npush 알림 수신에 동의하셨습니다.", Toast.LENGTH_SHORT).show();
             } else { // 권한 거절시 권한 정보 변경
                 Toast.makeText(getApplicationContext(), "알림 수신에 거절하셨습니다.", Toast.LENGTH_SHORT).show();
             }

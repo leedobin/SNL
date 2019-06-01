@@ -22,11 +22,14 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
+import com.four_leader.snl.container.activity.ContainerActivity;
 import com.four_leader.snl.content.activity.ContentActivity;
+import com.four_leader.snl.login.activity.LoginActivity;
 import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.main.vo.MainContent;
+import com.four_leader.snl.onetime.SetDefaultCategoryActivity;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
 import com.four_leader.snl.write.activity.WriteActivity;
@@ -138,49 +141,128 @@ public class MainFragment extends Fragment {
         categoryListView.setVisibility(View.VISIBLE);
 
         getCategories();
-        getMainContents();
     }
 
     private void getCategories() {
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.getUserCategory(userSeq);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
 
-        myCategories.clear();
-        myCategories.add(new Category("명언1", "1", true));
-        myCategories.add(new Category("명언2", "2", false));
-        myCategories.add(new Category("명언3", "3", false));
-        myCategories.add(new Category("명언4", "4", false));
-        myCategories.add(new Category("명언5", "5", false));
-        myCategories.add(new Category("명언6", "6", false));
+                try {
 
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
-        manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
 
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), myCategories, categoryClickHandler);
-        categoryListView.setLayoutManager(manager);
-        categoryListView.setAdapter(categoryAdapter);
+                    myCategories.clear();
+                    for(int i=0; i<report.length(); i++) {
+                        JSONObject object = report.getJSONObject(i);
+                        myCategories.add(new Category(
+                                object.getString("categorySeq"),
+                                object.getString("categoryName"),
+                                object.getString("step1"),
+                                object.getString("step2")
+                        ));
+                    }
+                    if(myCategories.size() != 0) {
+                        myCategories.get(0).setChecked(true);
+                        selectCategory(myCategories.get(0).getSeq());
+                    }
+                    LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
+                    manager.setOrientation(LinearLayoutManager.HORIZONTAL);
+
+                    categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), myCategories, categoryClickHandler);
+                    categoryListView.setLayoutManager(manager);
+                    categoryListView.setAdapter(categoryAdapter);
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(), "보유 카테고리 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
-    //# 서버에서 값 받아오게 수정해야 함
-    private void getMainContents() {
-        contents.clear();
+    private void selectCategory(String cateSeq) {
+        Call<String> call = apiInterface.getScriptByCateSeq(cateSeq);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
 
-        for(int i=0; i<10; i++) {
-            MainContent content = new MainContent();
-            content.setCode(String.valueOf(i));
-            content.setTitle("제목입니다.");
-            content.setCategory("명언");
-            content.setContent("컨텐츠의 내용입니다. 내용이네요 그래요 내용이예요ㅎㅎ");
-            content.setEndDate(10);
-            content.setUserNicname("내이름은 작성자");
-            content.setTime("2019-02-23 13:59:32");
-            content.setHeartCount(10);
-            content.setVoiceCount(20);
-            content.setBookmarkCount(60);
-            content.setFileName("190223135932");
-            contents.add(content);
+                try {
+
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+
+                    for(int i=0; i<report.length(); i++) {
+//                        JSONObject object = report.getJSONObject(i);
+//                        MainContent content = new MainContent();
+//
+//                        content.setCode(object.getString("scriptSeq"));
+//                        content.setTitle(object.getString("scriptTitle"));
+//                        content.setCategory(object.getString("categoryName"));
+//                        content.setContent(object.getString("scriptContent"));
+//                        content.setEndDate(object.getInt("scriptDueDate"));
+//                        content.setUserNicname(object.getString("nickTitle") + " " + object.getString("nick"));
+//                        content.setTime("2019-02-23 13:59:32");
+//                        content.setHeartCount(10);
+//                        content.setVoiceCount(20);
+//                        content.setBookmarkCount(60);
+//                        content.setFileName("190223135932");
+//                        contents.add(content);
+
+
+                        /*
+                        {
+    "REPORT": [
+        {
+            "scriptSeq": "1",
+            "userSeq": "1",
+            "scriptTitle": "2019-04-20 05:53:13",
+            "scriptContent": "제목2",
+            "scriptDueDate": "내용2",
+            "categorySeq": "2019-04-20 05:53:13",
+            "share": "2",
+            "like": "0",
+            "report": "9",
+            "nick": "1",
+            "nickTitle": "qwea",
+            "categoryName": null,
+            "commentLike": "asd"
         }
+    ]
+                         */
 
-        contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
-        listView.setAdapter(contentAdapter);
+                    }
+
+
+                    contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
+                    listView.setAdapter(contentAdapter);
+
+
+                } catch (JSONException e) {
+                    Toast.makeText(getActivity(), "글 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     Handler togglePlayLayoutHandler = new Handler() {
@@ -231,6 +313,7 @@ public class MainFragment extends Fragment {
             }
             myCategories.get(position).setChecked(true);
             categoryAdapter.notifyDataSetChanged();
+            selectCategory(myCategories.get(position).getSeq());
         }
     };
 
