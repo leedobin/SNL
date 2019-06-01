@@ -7,7 +7,6 @@ public class DefaultCategory implements Serializable {
     private String code;
     private Boolean isChecked;
 
-
     public DefaultCategory(String name, String code, Boolean isChecked) {
         this.name = name;
         this.code = code;
@@ -37,4 +36,5 @@ public class DefaultCategory implements Serializable {
     public void setCode(String code) {
         this.code = code;
     }
+
 }

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.signup.activity.SignUp1Activity;
@@ -24,6 +25,9 @@ public class LicenseActivity extends AppCompatActivity {
     private ImageButton backBtn;
 
     final int REQUEST_CODE = 200;
+
+    private boolean check1 = false;
+    private boolean check2 = false;
 
     Intent intent;
 
@@ -58,9 +62,14 @@ public class LicenseActivity extends AppCompatActivity {
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent = new Intent(LicenseActivity.this, SignUp1Activity.class);
-                startActivity(intent);
-                finish();
+                if(check1 && check2) {
+                    intent = new Intent(LicenseActivity.this, SignUp1Activity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Toast.makeText(getApplicationContext(), "약관에 모두 동의해주시기 바랍니다.", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -85,8 +94,10 @@ public class LicenseActivity extends AppCompatActivity {
             if(resultCode == RESULT_OK){
                 if(data.getStringExtra("licenseSeq").equals("1")){
                     firstFowardIv.setImageResource(R.drawable.ic_check);
+                    check1 = true;
                 }else if(data.getStringExtra("licenseSeq").equals("2")){
                     secondFowardIv.setImageResource(R.drawable.ic_check);
+                    check2 = true;
                 }
             }
         }

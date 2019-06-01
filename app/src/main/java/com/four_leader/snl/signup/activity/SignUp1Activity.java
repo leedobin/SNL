@@ -3,13 +3,18 @@ package com.four_leader.snl.signup.activity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
@@ -34,10 +39,14 @@ public class SignUp1Activity extends AppCompatActivity {
     private String url = APIs.idcheck;
     private String id;
     private boolean isNext = false;
+    private TextView text1;
+    private ImageView img1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Log.i("ttt", "random : " + number);
         setContentView(R.layout.activity_sign_up1);
 
         nextBtn = findViewById(R.id.nextBtn);
@@ -49,46 +58,53 @@ public class SignUp1Activity extends AppCompatActivity {
         relativeLayout = findViewById(R.id.checkId);
         relativeLayout2 = findViewById(R.id.sendEmail);
 
+        text1 = findViewById(R.id.text1);
+        img1 = findViewById(R.id.img1);
+
+        img1.setVisibility(View.INVISIBLE);
+
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SignUp1Activity.this, SignUp2Activity.class);
-                //if(isNext && authEdt.getText().toString().equals(String.valueOf(number))){
-                    intent.putExtra("email",eMailEdt.getText().toString());
-                    startActivityForResult(intent, REQUEST_CODE);
-//                }else{
-//                    Toast.makeText(getApplicationContext(),"이메일 인증 또는 중복확인을 해주십시오",Toast.LENGTH_SHORT).show();
-//                }
-
+                if (isNext && authEdt.getText().toString().equals(String.valueOf(number))) {
+                    intent.putExtra("email", eMailEdt.getText().toString());
+                    startActivityForResult(intent, 100);
+                } else {
+                    Toast.makeText(getApplicationContext(), "이메일 인증 또는 중복확인을 해주십시오", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("tagtt", "id : " + eMailEdt.getText().toString());
                 id = eMailEdt.getText().toString();
+                img1.setVisibility(View.INVISIBLE);
+                text1.setVisibility(View.VISIBLE);
                 try {
                     connectAPI = new ConnectAPI();
-                    if(connectAPI.getStatus() == AsyncTask.Status.RUNNING){
+                    if (connectAPI.getStatus() == AsyncTask.Status.RUNNING) {
                         connectAPI.cancel(true);
                     }
-                    String result = connectAPI.execute(new String[]{url, "id="+id}).get();
+                    String result = connectAPI.execute(new String[]{url, "user_id=" + id}).get();
 
-                   JSONObject jsonObject = new JSONObject(result);
-                   JSONArray jArrObject  = jsonObject.getJSONArray("REPORT");
+                    JSONObject jsonObject = new JSONObject(result);
+                    JSONArray jArrObject = jsonObject.getJSONArray("REPORT");
 
-                    for (int i=0; i<jArrObject .length(); i++) {
-                        JSONObject actor = jArrObject .getJSONObject(i);
+                    for (int i = 0; i < jArrObject.length(); i++) {
+                        JSONObject actor = jArrObject.getJSONObject(i);
                         int idCount = Integer.parseInt(actor.getString("idCount"));
 
-                        if(idCount > 0){
+                        if (idCount > 0) {
                             isNext = false;
-                            Toast.makeText(getApplicationContext(),"아이디 중복", Toast.LENGTH_SHORT).show();
-                        }else{
+                            Toast.makeText(getApplicationContext(), "아이디 중복", Toast.LENGTH_SHORT).show();
+                        } else {
                             isNext = true;
+                            img1.setVisibility(View.VISIBLE);
+                            text1.setVisibility(View.INVISIBLE);
                             eMailEdt.setEnabled(false);
-                            Toast.makeText(getApplicationContext(),"사용가능 ID", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), "사용가능 ID", Toast.LENGTH_SHORT).show();
                         }
                         break;
                     }
@@ -105,17 +121,16 @@ public class SignUp1Activity extends AppCompatActivity {
                 try {
                     connectAPI = new ConnectAPI();
                     url = APIs.sendMail;
-                    if(connectAPI.getStatus() == AsyncTask.Status.RUNNING){
+                    if (connectAPI.getStatus() == AsyncTask.Status.RUNNING) {
                         connectAPI.cancel(true);
                     }
-
-                    connectAPI.execute(new String[]{url, "email="+eMailEdt.getText().toString()+"&"+"number="+String.valueOf(number)}).get();
+                    connectAPI.execute(new String[]{url, "email=" + eMailEdt.getText().toString() + "&" + "number=" + String.valueOf(number)}).get();
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(),"전송 하였습니다.",Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "전송 하였습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -128,9 +143,10 @@ public class SignUp1Activity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(resultCode == RESULT_OK) {
                 finish();
             }
         }

@@ -66,6 +66,7 @@
         android:layout_height="50dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/gray_round_border_box"
         android:orientation="horizontal">
 
@@ -88,15 +89,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_height="match_parent"
-        android:gravity="bottom"
         android:orientation="vertical">
 
         <Button
             android:id="@+id/nextBtn"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:layout_margin="5dp"
             android:background="#cdcdcd"
             android:text="다음" />
     </LinearLayout>

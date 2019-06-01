@@ -2,6 +2,7 @@ package com.four_leader.snl.signup.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
@@ -21,9 +23,10 @@ public class SignUp2Activity extends AppCompatActivity {
     private Button nextBtn;
     private EditText pwEdt, pwEdt2;
     private ImageButton backBtn;
-    private int REQUEST_CODE = 200;
     private Intent preIntent;
     String pwPattern = "^(?=.*\\d)(?=.*[a-z]).{6,15}$";
+    private ImageView checkImg;
+
 
 
     @Override
@@ -35,8 +38,10 @@ public class SignUp2Activity extends AppCompatActivity {
         backBtn = findViewById(R.id.backBtn);
         pwEdt = findViewById(R.id.pwEdt);
         pwEdt2 = findViewById(R.id.pwEdt2);
-        preIntent = getIntent();
+        checkImg = findViewById(R.id.checkImg);
+        checkImg.setVisibility(View.INVISIBLE);
 
+        preIntent = getIntent();
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -48,7 +53,7 @@ public class SignUp2Activity extends AppCompatActivity {
                     if (pwEdt.getText().toString().equals(pwEdt2.getText().toString())) {
                         intent.putExtra("email", preIntent.getStringExtra("email"));
                         intent.putExtra("pwd", pwEdt.getText().toString());
-                        startActivityForResult(intent, REQUEST_CODE);
+                        startActivityForResult(intent, 100);
                     } else {
                         Toast.makeText(getApplicationContext(), "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
                     }
@@ -62,9 +67,6 @@ public class SignUp2Activity extends AppCompatActivity {
         pwEdt2.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                if (!pwEdt.getText().toString().equals(pwEdt2.getText().toString())) {
-                    //Toast.makeText(getApplicationContext(), "불일치", Toast.LENGTH_SHORT).show();
-                }
             }
 
             @Override
@@ -74,7 +76,13 @@ public class SignUp2Activity extends AppCompatActivity {
 
             @Override
             public void afterTextChanged(Editable s) {
-
+                if(!pwEdt.getText().toString().equals("")) {
+                    if (pwEdt.getText().toString().equals(pwEdt2.getText().toString())) {
+                        checkImg.setVisibility(View.VISIBLE);
+                    } else {
+                        checkImg.setVisibility(View.INVISIBLE);
+                    }
+                }
             }
         });
 
@@ -86,16 +94,18 @@ public class SignUp2Activity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_CODE) {
-            if (resultCode == RESULT_OK) {
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode == 100) {
+            if(resultCode == RESULT_OK) {
                 setResult(RESULT_OK);
                 finish();
             }
         }
     }
-
 }

@@ -60,11 +60,13 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
+                android:id="@+id/text1"
                 android:text="중복확인"
                 android:layout_height="wrap_content" />
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_centerInParent="true"
+                android:id="@+id/img1"
                 android:src="@drawable/ic_round_check"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
@@ -97,11 +99,6 @@
                 android:layout_centerInParent="true"
                 android:gravity="center"
                 android:text="인증번호\n요청"
-                android:layout_height="wrap_content" />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
-                android:src="@drawable/ic_round_check"
                 android:layout_height="wrap_content" />
         </RelativeLayout>
     </LinearLayout>

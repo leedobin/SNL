@@ -21,10 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".license.activity.LicenseActivity" />
-        <activity android:name=".signup.activity.SignUp1Activity" />
-        <activity android:name=".signup.activity.SignUp2Activity" />
+        <activity android:name=".signup.activity.SignUp1Activity" android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".signup.activity.SignUp2Activity" android:windowSoftInputMode="stateAlwaysVisible" />
         <activity android:name=".license.activity.LicenseDetailActivity" />
-        <activity android:name=".signup.activity.SignUp3Activity" />
+        <activity android:name=".signup.activity.SignUp3Activity" android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
             android:name=".onetime.SetDefaultCategoryPopup"
             android:theme="@android:style/Theme.Dialog" />

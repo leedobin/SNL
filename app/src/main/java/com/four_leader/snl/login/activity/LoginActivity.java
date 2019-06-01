@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -30,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button signupBtn, Loginbtn;
     private EditText editEmail, editPwd;
+    private CheckBox AutoLoginBtn;
     APIInterface apiInterface;
 
     @Override
@@ -41,6 +43,15 @@ public class LoginActivity extends AppCompatActivity {
 
         editEmail = findViewById(R.id.editEmail);
         editPwd = findViewById(R.id.editPwd);
+        AutoLoginBtn = findViewById(R.id.AutoLoginBtn);
+
+        SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
+        editEmail.setText(pref.getString("user_id", ""));
+        editPwd.setText(pref.getString("user_pw", ""));
+
+        if(pref.getBoolean("auto_login", false)) {
+            doLogin(pref.getString("user_id", ""), pref.getString("user_pw", ""));
+        }
 
         signupBtn = findViewById(R.id.signupBtn);
         signupBtn.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void doLogin(String email, String pwd) {
+    private void doLogin(final String email, final String pwd) {
         Call<String> call = apiInterface.doLogin(email, pwd);
         call.enqueue(new Callback<String>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -92,6 +103,12 @@ public class LoginActivity extends AppCompatActivity {
                     SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
                     SharedPreferences.Editor editor = pref.edit();
                     editor.putString("user_seq", user_seq);
+                    Log.i("ttag", "user_seq : " + user_seq);
+                    editor.putString("user_id", email);
+                    editor.putString("user_pw", pwd);
+                    if(AutoLoginBtn.isChecked()) {
+                        editor.putBoolean("auto_login", true);
+                    }
                     editor.commit();
 
                     Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
