@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.four_leader.snl.container.activity.ContainerActivity;
 import com.four_leader.snl.R;
 import com.four_leader.snl.license.activity.LicenseActivity;
+import com.four_leader.snl.onetime.SetDefaultCategoryActivity;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
 
@@ -110,9 +111,48 @@ public class LoginActivity extends AppCompatActivity {
                         editor.putBoolean("auto_login", true);
                     }
                     editor.commit();
+                    getUserCategoris();
 
-                    Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-                    startActivity(intent);
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    // 유저가 보유한 카테고리를 확인한 후
+    // 카테고리가 아무것도 없으면 카테고리 선택 페이지로 이동
+    // 카테고리가 1개 이상 있으면 메인 화면으로 이동
+    private void getUserCategoris() {
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.getUserCategory(userSeq);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
+
+                try {
+
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+                    if(report.length() == 0) {
+                        Intent intent = new Intent(LoginActivity.this, SetDefaultCategoryActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
 
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();

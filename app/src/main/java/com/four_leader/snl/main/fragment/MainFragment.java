@@ -1,10 +1,12 @@
 package com.four_leader.snl.main.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,26 +18,34 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.Spinner;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.activity.ContentActivity;
-import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
-import com.four_leader.snl.main.vo.DefaultCategory;
+import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.main.vo.MainContent;
-import com.four_leader.snl.notice.activity.NoticeActivity;
-import com.four_leader.snl.setting.activity.SettingActivity;
+import com.four_leader.snl.util.APIClient;
+import com.four_leader.snl.util.APIInterface;
 import com.four_leader.snl.write.activity.WriteActivity;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
+
 public class MainFragment extends Fragment {
 
-    ArrayList<DefaultCategory> categories;
+    ArrayList<Category> myCategories;
     RecyclerView categoryListView;
     CategoryAdapter categoryAdapter;
     ArrayList<String> searchType;
@@ -48,7 +58,7 @@ public class MainFragment extends Fragment {
     LinearLayout setLayout, writeBtn;
     ContentAdapter contentAdapter;
     Button setContentOptionBtn;
-
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     public MainFragment() {
         // Required empty public constructor
@@ -80,7 +90,7 @@ public class MainFragment extends Fragment {
         setLayout = v.findViewById(R.id.setLayout);
         setContentOptionBtn = v.findViewById(R.id.setContentOptionBtn);
 
-        categories = new ArrayList<>();
+        myCategories = new ArrayList<>();
         contents = new ArrayList<>();
 
         setLayout.setVisibility(View.GONE);
@@ -132,18 +142,19 @@ public class MainFragment extends Fragment {
     }
 
     private void getCategories() {
-        categories.clear();
-        categories.add(new DefaultCategory("명언1", "1", true));
-        categories.add(new DefaultCategory("명언2", "2", false));
-        categories.add(new DefaultCategory("명언3", "3", false));
-        categories.add(new DefaultCategory("명언4", "4", false));
-        categories.add(new DefaultCategory("명언5", "5", false));
-        categories.add(new DefaultCategory("명언6", "6", false));
+
+        myCategories.clear();
+        myCategories.add(new Category("명언1", "1", true));
+        myCategories.add(new Category("명언2", "2", false));
+        myCategories.add(new Category("명언3", "3", false));
+        myCategories.add(new Category("명언4", "4", false));
+        myCategories.add(new Category("명언5", "5", false));
+        myCategories.add(new Category("명언6", "6", false));
 
         LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
         manager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), categories, categoryClickHandler);
+        categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), myCategories, categoryClickHandler);
         categoryListView.setLayoutManager(manager);
         categoryListView.setAdapter(categoryAdapter);
     }
@@ -215,10 +226,10 @@ public class MainFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             int position = msg.what;
-            for(int i=0; i<categories.size(); i++) {
-                categories.get(i).setChecked(false);
+            for(int i = 0; i< myCategories.size(); i++) {
+                myCategories.get(i).setChecked(false);
             }
-            categories.get(position).setChecked(true);
+            myCategories.get(position).setChecked(true);
             categoryAdapter.notifyDataSetChanged();
         }
     };

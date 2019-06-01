@@ -15,13 +15,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
-import com.four_leader.snl.login.activity.LoginActivity;
-import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.main.fragment.LibraryFragment;
 import com.four_leader.snl.main.fragment.MainFragment;
+import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.notice.fragment.NoticeFragment;
 import com.four_leader.snl.onetime.PushAuthActivity;
-import com.four_leader.snl.onetime.SetDefaultCategoryPopup;
 import com.four_leader.snl.setting.fragment.SettingFragment;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
@@ -29,6 +27,8 @@ import com.four_leader.snl.util.APIInterface;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -43,10 +43,9 @@ public class ContainerActivity extends AppCompatActivity {
     SettingFragment settingFragment;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
-    boolean isFirstAccess = true; //# 로그인시 유저가 보유한 카테고리 정보 가져와야 함
-
     TextView mainBtn, libraryBtn, settingBtn;
     RelativeLayout noticeBtn;
+    public ArrayList<Category> myCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,23 +90,23 @@ public class ContainerActivity extends AppCompatActivity {
 
     private void init() {
         fm = getSupportFragmentManager();
+        myCategories = new ArrayList<>();
 
         mainFragment = MainFragment.newInstance();
         libraryFragment = new LibraryFragment().newInstance();
         noticeFragment = new NoticeFragment().newInstance();
         settingFragment = new SettingFragment().newInstance();
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.frameLayout, mainFragment).commit();
 
         mainBtn = findViewById(R.id.mainBtn);
         libraryBtn = findViewById(R.id.libraryBtn);
         noticeBtn = findViewById(R.id.noticeBtn);
         settingBtn = findViewById(R.id.settingBtn);
+
+
     }
 
-    private void setDefaultCategories() {
+    private void checkCategories() {
         SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
         String userSeq = preferences.getString("user_seq", "");
         Call<String> call = apiInterface.getUserCategory(userSeq);
@@ -117,32 +116,27 @@ public class ContainerActivity extends AppCompatActivity {
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body().toString();
 
-                //# 작업중
-//                try {
-//
-//                    JSONObject resultObj = new JSONObject(result);
-//                    JSONArray report = resultObj.getJSONArray("REPORT");
-//                    JSONObject obj = new JSONObject(report.get(0).toString());
-//                    String user_seq = obj.getString("user_seq");
-//
-//                    SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
-//                    SharedPreferences.Editor editor = pref.edit();
-//                    editor.putString("user_seq", user_seq);
-//                    Log.i("ttag", "user_seq : " + user_seq);
-//                    editor.putString("user_id", email);
-//                    editor.putString("user_pw", pwd);
-//                    if(AutoLoginBtn.isChecked()) {
-//                        editor.putBoolean("auto_login", true);
-//                    }
-//                    editor.commit();
-//
-//                    Intent intent = new Intent(LoginActivity.this, ContainerActivity.class);
-//                    startActivity(intent);
-//
-//                } catch (JSONException e) {
-//                    Toast.makeText(getApplicationContext(), "로그인 실패", Toast.LENGTH_SHORT).show();
-//                    e.printStackTrace();
-//                }
+                Log.i("ttag", result);
+                try {
+
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+
+                    myCategories.clear();
+                    for(int i=0; i<report.length(); i++) {
+                        JSONObject object = report.getJSONObject(i);
+                        myCategories.add(
+                                new Category(object.getString("categorySeq"),
+                                        object.getString("categoryName"),
+                                        object.getString("step1"),
+                                        object.getString("step2")));
+                    }
+                    getMainPage();
+
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "보유 카테고리 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
             }
 
             @Override
@@ -151,13 +145,6 @@ public class ContainerActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
             }
         });
-
-        if(isFirstAccess) {
-            Intent intent = new Intent(ContainerActivity.this, SetDefaultCategoryPopup.class);
-            startActivityForResult(intent, 0);
-        } else {
-            getMainPage();
-        }
     }
 
     private void getMainPage() {
@@ -195,7 +182,7 @@ public class ContainerActivity extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "알림 수신에 거절하셨습니다.", Toast.LENGTH_SHORT).show();
             }
             // 해당 유저가 보유한 카테고리 목록 조회 후 카테고리가 하나도 없으면 해당 팝업 띄워주기
-            setDefaultCategories();
+            checkCategories();
         }
     }
 }

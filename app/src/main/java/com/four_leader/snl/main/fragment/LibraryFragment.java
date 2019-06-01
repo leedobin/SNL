@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +17,8 @@ import android.widget.Spinner;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.activity.ContentActivity;
-import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
-import com.four_leader.snl.main.vo.DefaultCategory;
+import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.main.vo.MainContent;
 import com.four_leader.snl.write.activity.WriteActivity;
 
@@ -29,7 +26,7 @@ import java.util.ArrayList;
 
 public class LibraryFragment extends Fragment {
 
-    ArrayList<DefaultCategory> categories;
+    ArrayList<Category> categories;
     ArrayList<String> searchType;
     Spinner searchSpinner;
 

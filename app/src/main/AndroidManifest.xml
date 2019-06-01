@@ -26,8 +26,7 @@
         <activity android:name=".license.activity.LicenseDetailActivity" />
         <activity android:name=".signup.activity.SignUp3Activity" android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".onetime.SetDefaultCategoryPopup"
-            android:theme="@android:style/Theme.Dialog" />
+            android:name=".onetime.SetDefaultCategoryActivity" />
         <activity android:name=".login.activity.LoginActivity" />
         <activity android:name=".main.activity.MainActivity" />
         <activity android:name=".content.activity.ContentActivity" />

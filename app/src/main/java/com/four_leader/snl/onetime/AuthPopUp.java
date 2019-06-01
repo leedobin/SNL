@@ -36,6 +36,7 @@ public class AuthPopUp extends AppCompatActivity {
                 && writeStoragePermission == PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(AuthPopUp.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
         nextBtn.setOnClickListener(new View.OnClickListener() {
@@ -58,6 +59,7 @@ public class AuthPopUp extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "권한 허가", Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AuthPopUp.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
         @Override
@@ -65,6 +67,7 @@ public class AuthPopUp extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "권한 거부\n" + deniedPermissions.toString(), Toast.LENGTH_SHORT).show();
             Intent intent = new Intent(AuthPopUp.this, LoginActivity.class);
             startActivity(intent);
+            finish();
         }
 
     };

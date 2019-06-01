@@ -9,16 +9,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.four_leader.snl.R;
+import com.four_leader.snl.main.vo.Category;
 
 import java.util.ArrayList;
 
 public class SetDefaultCategoryAdapter extends BaseAdapter {
 
     public Context context;
-    public ArrayList<DefaultCategory> arrayList;
+    public ArrayList<Category> arrayList;
     LayoutInflater inflater;
 
-    public SetDefaultCategoryAdapter(Context context, ArrayList<DefaultCategory> dataList) {
+    public SetDefaultCategoryAdapter(Context context, ArrayList<Category> dataList) {
         super();
         this.context = context;
         arrayList = dataList;
@@ -53,7 +54,7 @@ public class SetDefaultCategoryAdapter extends BaseAdapter {
         holder.categoryText = convertView.findViewById(R.id.categoryText);
         holder.backgroundLayout = convertView.findViewById(R.id.backgroundLayout);
 
-        DefaultCategory data = arrayList.get(position);
+        Category data = arrayList.get(position);
 
         holder.categoryText.setText(data.getName());
         if (data.getChecked()) {

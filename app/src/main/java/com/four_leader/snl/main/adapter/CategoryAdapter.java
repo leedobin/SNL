@@ -12,13 +12,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.four_leader.snl.R;
-import com.four_leader.snl.main.vo.DefaultCategory;
+import com.four_leader.snl.main.vo.Category;
 
 import java.util.ArrayList;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.CustomViewHolder> {
 
-    private ArrayList<DefaultCategory> mList;
+    private ArrayList<Category> mList;
     private Context context;
     private Handler categoryClickHandler;
 
@@ -35,7 +35,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Custom
     }
 
 
-    public CategoryAdapter(Context mContext, ArrayList<DefaultCategory> list, Handler categoryClickHandler) {
+    public CategoryAdapter(Context mContext, ArrayList<Category> list, Handler categoryClickHandler) {
         this.context = mContext;
         this.mList = list;
         this.categoryClickHandler = categoryClickHandler;
