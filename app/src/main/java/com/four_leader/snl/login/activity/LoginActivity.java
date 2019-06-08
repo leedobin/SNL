@@ -93,7 +93,6 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 String result = response.body().toString();
-
                 try {
 
                     JSONObject resultObj = new JSONObject(result);
@@ -107,6 +106,8 @@ public class LoginActivity extends AppCompatActivity {
                     Log.i("ttag", "user_seq : " + user_seq);
                     editor.putString("user_id", email);
                     editor.putString("user_pw", pwd);
+                    editor.putString("agreement_push", obj.getString("agreement_push"));
+
                     if(AutoLoginBtn.isChecked()) {
                         editor.putBoolean("auto_login", true);
                     }

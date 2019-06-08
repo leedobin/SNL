@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "198961044654",
+    "firebase_url": "https://testsnl-f7f51.firebaseio.com",
+    "project_id": "testsnl-f7f51",
+    "storage_bucket": "testsnl-f7f51.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198961044654:android:f441c0d0c40a661a",
+        "android_client_info": {
+          "package_name": "com.four_leader.snl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198961044654-4222l5p7v2fi28vd0qbmcgsp6re8iksq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyABbCmtulKGXmzwSksdUIgkbRksuHsFPtQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198961044654-4222l5p7v2fi28vd0qbmcgsp6re8iksq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

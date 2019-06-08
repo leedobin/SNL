@@ -1,5 +1,9 @@
 package com.four_leader.snl.util;
 
+import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -18,7 +22,7 @@ public interface APIInterface {
 
     @GET("USER/login.php")
     Call<String> doLogin(@Query("user_id") String email,
-                         @Query("user_pw") String pwd
+                             @Query("user_pw") String pwd
     );
 
     // 전체 카테고리 목록 조회
@@ -41,4 +45,9 @@ public interface APIInterface {
     // 카테고리 시퀀스에 따라 글 목록 조회(메인)
     @GET("SCRIPT/scriptList.php")
     Call<String> getScriptByCateSeq(@Query("category") String categorySeq);
+
+    // 푸쉬권한 동의/거절
+    @GET("USER/push_permission.php")
+    Call<String> setPushPermission(@Query("userId") String userId,
+                                   @Query("date") String date);
 }

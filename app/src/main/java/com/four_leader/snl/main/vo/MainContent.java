@@ -4,22 +4,56 @@ import java.io.Serializable;
 
 public class MainContent implements Serializable {
     private String code;
+    private String writerSeq;
     private String title;
     private String category;
-    private int endDate;
     private String content;
     private String userNicname;
-    private String time;
     private int heartCount;
     private int voiceCount;
     private int bookmarkCount;
     private String fileName;
     private boolean isPlayLayoutOpen;
     private boolean isBookmarked;
+    private String writeDate;
+    private String dueDate;
+    private int dDate;
 
     public MainContent() {
         isPlayLayoutOpen = false;
         isBookmarked = false;
+    }
+
+    public int getdDate() {
+        return dDate;
+    }
+
+    public void setdDate(int dDate) {
+        this.dDate = dDate;
+    }
+
+    public String getWriteDate() {
+        return writeDate;
+    }
+
+    public void setWriteDate(String writeDate) {
+        this.writeDate = writeDate;
+    }
+
+    public String getDueDate() {
+        return dueDate;
+    }
+
+    public void setDueDate(String dueDate) {
+        this.dueDate = dueDate;
+    }
+
+    public String getWriterSeq() {
+        return writerSeq;
+    }
+
+    public void setWriterSeq(String writerSeq) {
+        this.writerSeq = writerSeq;
     }
 
     public String getCode() {
@@ -46,14 +80,6 @@ public class MainContent implements Serializable {
         this.category = category;
     }
 
-    public int getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(int endDate) {
-        this.endDate = endDate;
-    }
-
     public String getContent() {
         return content;
     }
@@ -68,14 +94,6 @@ public class MainContent implements Serializable {
 
     public void setUserNicname(String userNicname) {
         this.userNicname = userNicname;
-    }
-
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
     }
 
     public int getHeartCount() {

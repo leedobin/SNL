@@ -24,6 +24,9 @@ import com.four_leader.snl.onetime.PushAuthActivity;
 import com.four_leader.snl.setting.fragment.SettingFragment;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -49,7 +52,7 @@ public class ContainerActivity extends AppCompatActivity {
 
     TextView mainBtn, libraryBtn, settingBtn;
     RelativeLayout noticeBtn;
-    public ArrayList<Category> myCategories;
+    public static ArrayList<Category> myCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,40 +89,24 @@ public class ContainerActivity extends AppCompatActivity {
             }
         });
 
+        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener(this, new OnSuccessListener<InstanceIdResult>() {
+            @Override
+            public void onSuccess(InstanceIdResult instanceIdResult) {
+                Log.i("ttag", instanceIdResult.getToken());
+            }
+        });
+
     }
 
     private void checkPushPermission() {
         SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
-        String userSeq = preferences.getString("user_seq", "");
-        Call<String> call = apiInterface.checkUserPermission(userSeq);
-        call.enqueue(new Callback<String>() {
-            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-            @Override
-            public void onResponse(Call<String> call, Response<String> response) {
-                String result = response.body().toString();
-
-                try {
-                    JSONObject resultObj = new JSONObject(result);
-                    JSONArray report = resultObj.getJSONArray("REPORT");
-
-                    if(report.length() == 0) {
-                        Intent intent = new Intent(ContainerActivity.this, PushAuthActivity.class);
-                        startActivityForResult(intent, 100);
-                    } else {
-                        // 해당 유저가 보유한 카테고리 목록 조회 후 카테고리가 하나도 없으면 해당 팝업 띄워주기
-                        checkCategories();
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<String> call, Throwable t) {
-                call.cancel();
-                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
-            }
-        });
+        String agreement_push_date = preferences.getString("agreement_push", "x");
+        if(agreement_push_date.equals("x")) {
+            Intent intent = new Intent(ContainerActivity.this, PushAuthActivity.class);
+            startActivityForResult(intent, 100);
+        } else {
+            checkCategories();
+        }
     }
 
     private void init() {
@@ -202,25 +189,44 @@ public class ContainerActivity extends AppCompatActivity {
                 .replace(R.id.frameLayout, settingFragment).commit();
     }
 
-    private void setPushPermission(boolean granted) {
 
-    }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 100) { // 최초 접속시 push 확인
+            Date d = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM시 dd분 ss초");
+            String time = sdf.format(d);
+            SimpleDateFormat sdf2 = new SimpleDateFormat("yyyyMMddss");
+            String time2 = sdf2.format(d);
             if (resultCode == RESULT_OK) { // 권한 허가시 권한 정보 변경
-                Date d = new Date();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy년 MM시 dd분 ss초");
-                String time = sdf.format(d);
-
                 Toast.makeText(getApplicationContext(), time + "에\npush 알림 수신에 동의하셨습니다.", Toast.LENGTH_SHORT).show();
-            } else { // 권한 거절시 권한 정보 변경
+                setPushPermission("y" + time2);
+            } else if(resultCode == RESULT_CANCELED){ // 권한 거절시 권한 정보 변경
                 Toast.makeText(getApplicationContext(), "알림 수신에 거절하셨습니다.", Toast.LENGTH_SHORT).show();
+                setPushPermission("n" + time2);
             }
             // 해당 유저가 보유한 카테고리 목록 조회 후 카테고리가 하나도 없으면 해당 팝업 띄워주기
             checkCategories();
         }
+    }
+
+    private void setPushPermission(String date) {
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        Call<String> call = apiInterface.setPushPermission(preferences.getString("user_id", ""), date);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

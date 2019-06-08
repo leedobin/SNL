@@ -88,11 +88,11 @@ public class ContentAdapter extends BaseAdapter {
         MainContent data = arrayList.get(position);
 
         holder.categoryText.setText(data.getCategory());
-        holder.endDateText.setText("D - "+data.getEndDate());
+        holder.endDateText.setText("D - "+data.getdDate());
         holder.titleText.setText(data.getTitle());
         holder.contentText.setText(data.getContent());
         holder.nameText.setText(data.getUserNicname());
-        holder.dateText.setText(data.getTime());
+        holder.dateText.setText(data.getWriteDate());
         holder.heartText.setText(String.valueOf(data.getHeartCount()));
         holder.commentText.setText(String.valueOf(data.getVoiceCount()));
         holder.bookmarkText.setText(String.valueOf(data.getBookmarkCount()));

@@ -121,9 +121,9 @@ public class LibraryFragment extends Fragment {
             content.setTitle("제목입니다.");
             content.setCategory("명언");
             content.setContent("컨텐츠의 내용입니다. 내용이네요 그래요 내용이예요ㅎㅎ");
-            content.setEndDate(10);
+            content.setdDate(10);
             content.setUserNicname("내이름은 작성자");
-            content.setTime("2019-02-23 13:59:32");
+            content.setWriteDate("2019-02-23 13:59:32");
             content.setHeartCount(10);
             content.setVoiceCount(20);
             content.setBookmarkCount(60);
