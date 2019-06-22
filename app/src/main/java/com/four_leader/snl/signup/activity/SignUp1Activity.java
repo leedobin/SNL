@@ -79,6 +79,10 @@ public class SignUp1Activity extends AppCompatActivity {
         relativeLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(eMailEdt.getText().toString().equals("")) {
+                    Toast.makeText(SignUp1Activity.this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 id = eMailEdt.getText().toString();
                 img1.setVisibility(View.INVISIBLE);
                 text1.setVisibility(View.VISIBLE);
@@ -118,6 +122,10 @@ public class SignUp1Activity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 number = new Random().nextInt(100000);
+                if(eMailEdt.getText().toString().equals("")) {
+                    Toast.makeText(SignUp1Activity.this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 try {
                     connectAPI = new ConnectAPI();
                     url = APIs.sendMail;
@@ -130,7 +138,7 @@ public class SignUp1Activity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getApplicationContext(), "전송 하였습니다.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "전송 하였습니다. 이메일을 확인해주세요.", Toast.LENGTH_SHORT).show();
             }
         });
 

@@ -213,13 +213,9 @@ public class MainFragment extends Fragment {
                         JSONObject object = report.getJSONObject(i);
                         MainContent content = new MainContent();
 
-
                         /*
-
-
-
-            "scriptReported": "1",
-            "commentLikes": "100"
+                            "scriptReported": "1",
+                            "commentLikes": "100"
                          */
 
                         content.setCode(object.getString("scriptSeq"));

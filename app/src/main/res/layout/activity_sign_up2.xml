@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="비밀번호를 입력해주세요."
+            android:text="비밀번호 설정"
             android:textSize="18dp" />
 
 

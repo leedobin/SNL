@@ -22,7 +22,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="이메일을 입력해주세요."
+            android:text="이메일을 인증"
             android:textSize="18dp" />
 
 
