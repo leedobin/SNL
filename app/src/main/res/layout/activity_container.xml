@@ -10,6 +10,22 @@
         android:layout_above="@+id/line"
         android:background="@android:color/transparent" />
 
+    <LinearLayout
+        android:id="@+id/writeBtn"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_above="@+id/line"
+        android:layout_alignParentRight="true"
+        android:layout_margin="20dp"
+        android:background="@drawable/circle_write_btn"
+        android:gravity="center">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_plus" />
+    </LinearLayout>
+
     <ImageView
         android:id="@+id/line"
         android:layout_width="match_parent"
@@ -71,6 +87,5 @@
             android:gravity="center"
             android:text="관리" />
     </LinearLayout>
-
 
 </RelativeLayout>

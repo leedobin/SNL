@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
+import com.four_leader.snl.main.vo.MainContent;
 
 import java.io.File;
 import java.io.IOException;
@@ -18,7 +20,9 @@ public class RecordActivity extends AppCompatActivity {
     ImageButton closeViewBtn;
     ImageButton startRecordBtn;
     ImageButton stopRecordBtn;
+    TextView textView;
     MediaRecorder recorder = new MediaRecorder();
+    MainContent content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +32,11 @@ public class RecordActivity extends AppCompatActivity {
         closeViewBtn = findViewById(R.id.closeViewBtn);
         startRecordBtn = findViewById(R.id.startRecordBtn);
         stopRecordBtn = findViewById(R.id.stopRecordBtn);
+        textView = findViewById(R.id.textView);
+
+        content = (MainContent) getIntent().getSerializableExtra("content");
+        textView.setText(content.getContent());
+
 
         closeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override

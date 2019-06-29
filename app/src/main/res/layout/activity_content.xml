@@ -38,6 +38,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
+        android:id="@+id/titleText"
         android:text="TITLE"
         android:textSize="18dp"
         android:textStyle="bold" />
@@ -53,11 +54,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:id="@+id/nickNameText"
             android:text="닉네임영역"
             android:textSize="15dp" />
 
         <TextView
             android:layout_width="wrap_content"
+            android:id="@+id/dateText"
             android:layout_height="wrap_content"
             android:text="2019-10-10 10:10:10"
             android:textSize="15dp" />
@@ -66,6 +69,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/contentText"
         android:padding="10dp"
         android:text="content area"
         android:textSize="15dp" />
@@ -91,8 +95,9 @@
 
             <TextView
                 android:layout_width="wrap_content"
+                android:id="@+id/heartText"
                 android:layout_height="wrap_content"
-                android:text="100"
+                android:text="0"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -128,7 +133,8 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="100"
+                android:text="0"
+                android:id="@+id/bookmarkText"
                 android:textSize="15sp" />
         </LinearLayout>
     </LinearLayout>

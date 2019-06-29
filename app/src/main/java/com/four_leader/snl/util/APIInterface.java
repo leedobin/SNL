@@ -50,4 +50,8 @@ public interface APIInterface {
     @GET("USER/push_permission.php")
     Call<String> setPushPermission(@Query("userId") String userId,
                                    @Query("date") String date);
+
+    // 해당 게시글의 댓글 목록 조회
+    @GET("SCRIPT/DetailsOfScript.php")
+    Call<String> getScriptComment(@Query("script_seq") String scriptSeq);
 }

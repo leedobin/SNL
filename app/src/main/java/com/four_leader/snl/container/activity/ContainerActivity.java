@@ -1,6 +1,5 @@
 package com.four_leader.snl.container.activity;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -11,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -24,6 +24,7 @@ import com.four_leader.snl.onetime.PushAuthActivity;
 import com.four_leader.snl.setting.fragment.SettingFragment;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
+import com.four_leader.snl.write.activity.WriteActivity;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.iid.InstanceIdResult;
@@ -52,7 +53,8 @@ public class ContainerActivity extends AppCompatActivity {
 
     TextView mainBtn, libraryBtn, settingBtn;
     RelativeLayout noticeBtn;
-    public static ArrayList<Category> myCategories;
+    LinearLayout writeBtn;
+    public static ArrayList<Category> myAllCategories;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +113,7 @@ public class ContainerActivity extends AppCompatActivity {
 
     private void init() {
         fm = getSupportFragmentManager();
-        myCategories = new ArrayList<>();
+        myAllCategories = new ArrayList<>();
 
         mainFragment = MainFragment.newInstance();
         libraryFragment = new LibraryFragment().newInstance();
@@ -122,6 +124,15 @@ public class ContainerActivity extends AppCompatActivity {
         libraryBtn = findViewById(R.id.libraryBtn);
         noticeBtn = findViewById(R.id.noticeBtn);
         settingBtn = findViewById(R.id.settingBtn);
+        writeBtn = findViewById(R.id.writeBtn);
+
+        writeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContainerActivity.this, WriteActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void checkCategories() {
@@ -140,10 +151,10 @@ public class ContainerActivity extends AppCompatActivity {
                     JSONObject resultObj = new JSONObject(result);
                     JSONArray report = resultObj.getJSONArray("REPORT");
 
-                    myCategories.clear();
+                    myAllCategories.clear();
                     for (int i = 0; i < report.length(); i++) {
                         JSONObject object = report.getJSONObject(i);
-                        myCategories.add(
+                        myAllCategories.add(
                                 new Category(object.getString("categorySeq"),
                                         object.getString("categoryName"),
                                         object.getString("step1"),

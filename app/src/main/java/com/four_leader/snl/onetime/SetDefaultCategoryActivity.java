@@ -79,11 +79,15 @@ public class SetDefaultCategoryActivity extends Activity {
                     }
                 }
                 if(selectedCount > 0) {
+                    String in = "";
                     for(Category cate: categories) {
                         if(cate.getChecked()) {
-                            addCategories(cate.getSeq());
+                            in += cate.getSeq() + ",";
                         }
                     }
+                    in = in.substring(0, in.length()-1);
+                    addCategories(in);
+
                     Intent intent = new Intent(getApplicationContext(), ContainerActivity.class);
                     startActivity(intent);
                     finish();

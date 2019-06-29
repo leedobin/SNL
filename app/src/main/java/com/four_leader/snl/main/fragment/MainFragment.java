@@ -24,14 +24,12 @@ import android.widget.Toast;
 import com.four_leader.snl.R;
 import com.four_leader.snl.container.activity.ContainerActivity;
 import com.four_leader.snl.content.activity.ContentActivity;
-import com.four_leader.snl.main.activity.MainActivity;
 import com.four_leader.snl.main.adapter.CategoryAdapter;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.main.vo.MainContent;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
-import com.four_leader.snl.write.activity.WriteActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -65,6 +63,7 @@ public class MainFragment extends Fragment {
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     ContainerActivity parentActivity;
+    ArrayList<Category> step2Categories;
 
     public MainFragment() {
         // Required empty public constructor
@@ -89,8 +88,6 @@ public class MainFragment extends Fragment {
 
         parentActivity = (ContainerActivity) getActivity();
 
-        writeBtn = v.findViewById(R.id.writeBtn);
-
         categoryListView = v.findViewById(R.id.categoryListView);
         searchSpinner = v.findViewById(R.id.searchSpinner);
         listView = v.findViewById(R.id.listView);
@@ -99,6 +96,7 @@ public class MainFragment extends Fragment {
         setContentOptionBtn = v.findViewById(R.id.setContentOptionBtn);
 
         contents = new ArrayList<>();
+        step2Categories = new ArrayList<>();
 
         setLayout.setVisibility(View.GONE);
         searchType = new ArrayList<>();
@@ -108,11 +106,10 @@ public class MainFragment extends Fragment {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, searchType);
         searchSpinner.setAdapter(spinnerAdapter);
 
-
         setBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(setLayout.getVisibility() == View.VISIBLE) {
+                if (setLayout.getVisibility() == View.VISIBLE) {
                     setLayout.setVisibility(View.GONE);
                 } else {
                     setLayout.setVisibility(View.VISIBLE);
@@ -128,13 +125,6 @@ public class MainFragment extends Fragment {
             }
         });
 
-        writeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), WriteActivity.class);
-                startActivity(intent);
-            }
-        });
 
         getMainPage();
 
@@ -162,24 +152,34 @@ public class MainFragment extends Fragment {
                     JSONObject resultObj = new JSONObject(result);
                     JSONArray report = resultObj.getJSONArray("REPORT");
 
-                    parentActivity.myCategories.clear();
-                    for(int i=0; i<report.length(); i++) {
+                    parentActivity.myAllCategories.clear();
+                    step2Categories.clear();
+                    for (int i = 0; i < report.length(); i++) {
                         JSONObject object = report.getJSONObject(i);
-                        parentActivity.myCategories.add(new Category(
+                        parentActivity.myAllCategories.add(new Category(
                                 object.getString("categorySeq"),
                                 object.getString("categoryName"),
                                 object.getString("step1"),
                                 object.getString("step2")
                         ));
+                        if (!object.getString("step2").equals("0")) {
+                            step2Categories.add(new Category(
+                                    object.getString("categorySeq"),
+                                    object.getString("categoryName"),
+                                    object.getString("step1"),
+                                    object.getString("step2")
+                            ));
+                        }
                     }
-                    if(parentActivity.myCategories.size() != 0) {
-                        parentActivity.myCategories.get(0).setChecked(true);
-                        selectCategory(parentActivity.myCategories.get(0).getSeq());
+
+                    if (step2Categories.size() != 0) {
+                        step2Categories.get(0).setChecked(true);
+                        selectCategory(step2Categories.get(0).getSeq());
                     }
                     LinearLayoutManager manager = new LinearLayoutManager(getActivity().getApplicationContext());
                     manager.setOrientation(LinearLayoutManager.HORIZONTAL);
 
-                    categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), parentActivity.myCategories, categoryClickHandler);
+                    categoryAdapter = new CategoryAdapter(getActivity().getApplicationContext(), step2Categories, categoryClickHandler);
                     categoryListView.setLayoutManager(manager);
                     categoryListView.setAdapter(categoryAdapter);
                 } catch (JSONException e) {
@@ -209,7 +209,7 @@ public class MainFragment extends Fragment {
                     JSONObject resultObj = new JSONObject(result);
                     JSONArray report = resultObj.getJSONArray("REPORT");
                     contents.clear();
-                    for(int i=0; i<report.length(); i++) {
+                    for (int i = 0; i < report.length(); i++) {
                         JSONObject object = report.getJSONObject(i);
                         MainContent content = new MainContent();
 
@@ -230,7 +230,7 @@ public class MainFragment extends Fragment {
                         //# 수정하기 content.setVoiceCount(0);
                         content.setBookmarkCount(Integer.parseInt(object.getString("scriptShare")));
 
-                        if(object.getString("titleInfoTitle") == "null") {
+                        if (object.getString("titleInfoTitle") == "null") {
                             content.setUserNicname(object.getString("userNice"));
                         } else {
                             content.setUserNicname(object.getString("titleInfoTitle") + " " + object.getString("userNice"));
@@ -274,8 +274,8 @@ public class MainFragment extends Fragment {
             super.handleMessage(msg);
 
 
-            for(int i=0; i<contents.size(); i++) {
-                if(i == msg.what) {
+            for (int i = 0; i < contents.size(); i++) {
+                if (i == msg.what) {
                     contents.get(msg.what).setPlayLayoutOpen(!contents.get(msg.what).isPlayLayoutOpen());
                 } else {
                     contents.get(i).setPlayLayoutOpen(false);
@@ -290,7 +290,7 @@ public class MainFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Intent intent = new Intent(getActivity(), ContentActivity.class);
-            intent.putExtra("code", contents.get(msg.what).getCode());
+            intent.putExtra("content", contents.get(msg.what));
             startActivity(intent);
         }
     };
@@ -299,7 +299,7 @@ public class MainFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(contents.get(msg.what).isBookmarked()) {
+            if (contents.get(msg.what).isBookmarked()) {
                 contents.get(msg.what).setBookmarked(!contents.get(msg.what).isBookmarked());
             }
             contentAdapter.notifyDataSetChanged();
@@ -311,12 +311,12 @@ public class MainFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             int position = msg.what;
-            for(int i = 0; i< parentActivity.myCategories.size(); i++) {
-                parentActivity.myCategories.get(i).setChecked(false);
+            for (int i = 0; i < step2Categories.size(); i++) {
+                step2Categories.get(i).setChecked(false);
             }
-            parentActivity.myCategories.get(position).setChecked(true);
+            step2Categories.get(position).setChecked(true);
             categoryAdapter.notifyDataSetChanged();
-            selectCategory(parentActivity.myCategories.get(position).getSeq());
+            selectCategory(step2Categories.get(position).getSeq());
         }
     };
 

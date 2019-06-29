@@ -1,24 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:orientation="vertical"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
-        android:layout_width="match_parent"
         android:id="@+id/categoryText"
-        android:text="카테고리명"
-        android:textSize="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="47dp"
+        android:gravity="center"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
-        android:gravity="center"
-        android:layout_height="47dp" />
+        android:text="카테고리명"
+        android:textSize="15dp" />
 
     <ImageView
+        android:id="@+id/bottomBar"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:id="@+id/bottomBar"
-        android:background="#0077d9"/>
-
+        android:background="#0077d9" />
 </LinearLayout>

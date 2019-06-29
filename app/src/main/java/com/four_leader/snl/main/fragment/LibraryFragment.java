@@ -34,7 +34,7 @@ public class LibraryFragment extends Fragment {
 
     ListView listView;
     ImageButton setBtn;
-    LinearLayout setLayout, writeBtn;
+    LinearLayout setLayout;
     ContentAdapter contentAdapter;
     Button setContentOptionBtn;
 
@@ -59,8 +59,6 @@ public class LibraryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_library, container, false);
-
-        writeBtn = v.findViewById(R.id.writeBtn);
 
         searchSpinner = v.findViewById(R.id.searchSpinner);
         listView = v.findViewById(R.id.listView);
@@ -95,14 +93,6 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 setLayout.setVisibility(View.GONE);
-            }
-        });
-
-        writeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), WriteActivity.class);
-                startActivity(intent);
             }
         });
 

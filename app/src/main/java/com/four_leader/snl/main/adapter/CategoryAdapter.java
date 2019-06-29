@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.four_leader.snl.R;
@@ -50,10 +51,8 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Custom
 
         CustomViewHolder viewHolder = new CustomViewHolder(view);
 
-
         return viewHolder;
     }
-
 
 
     // Adapter의 특정 위치(position)에 있는 데이터를 보여줘야 할때 호출됩니다.
@@ -62,7 +61,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Custom
         viewholder.categoryText.setTag(position);
         viewholder.categoryText.setText(mList.get(position).getName());
 
-        if(mList.get(position).getChecked()) {
+        if (mList.get(position).getChecked()) {
             viewholder.bottomBar.setVisibility(View.VISIBLE);
         } else {
             viewholder.bottomBar.setVisibility(View.INVISIBLE);

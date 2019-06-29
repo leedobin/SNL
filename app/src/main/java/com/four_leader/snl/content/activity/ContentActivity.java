@@ -1,21 +1,40 @@
 package com.four_leader.snl.content.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.adapter.VoiceAdapter;
 import com.four_leader.snl.content.vo.Voice;
+import com.four_leader.snl.main.adapter.ContentAdapter;
+import com.four_leader.snl.main.vo.MainContent;
+import com.four_leader.snl.util.APIClient;
+import com.four_leader.snl.util.APIInterface;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ContentActivity extends AppCompatActivity {
 
@@ -24,6 +43,9 @@ public class ContentActivity extends AppCompatActivity {
     LinearLayout playView;
     ImageButton closePlayViewBtn, backBtn, recordBtn;
     ListView listView;
+    MainContent content;
+    TextView titleText, contentText, dateText, heartText, bookmarkText, nickNameText;
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +57,18 @@ public class ContentActivity extends AppCompatActivity {
         listView = findViewById(R.id.listView);
         backBtn = findViewById(R.id.backBtn);
         recordBtn = findViewById(R.id.recordBtn);
+        titleText = findViewById(R.id.titleText);
+        contentText = findViewById(R.id.contentText);
+        dateText = findViewById(R.id.dateText);
+        heartText = findViewById(R.id.heartText);
+        bookmarkText = findViewById(R.id.bookmarkText);
+        nickNameText = findViewById(R.id.nickNameText);
 
+        content = (MainContent) getIntent().getSerializableExtra("content");
         voices = new ArrayList<>();
-        getContentInfo(getIntent().getStringExtra("code"));
-        adapter = new VoiceAdapter(getApplicationContext(), voices, btnClickHandler);
-        listView.setAdapter(adapter);
+
+        setContent();
+        getComments(content.getCode());
 
         closePlayViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,23 +88,58 @@ public class ContentActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(ContentActivity.this, RecordActivity.class);
+                intent.putExtra("content", content);
                 startActivity(intent);
             }
         });
     }
 
-    //#
-    private void getContentInfo(String code) {
-        for(int i=0; i<10; i++) {
-            Voice voice = new Voice();
-            voice.setCode(String.valueOf(i));
-            voice.setFileName("file"+i);
-            voice.setHeartCount(10+i);
-            voice.setWriter("댓글작성자"+i);
-            voice.setHeartCount(10);
-            voice.setBookmarkCount(20);
-            voices.add(voice);
-        }
+    private void setContent() {
+        titleText.setText(content.getTitle());
+        contentText.setText(content.getContent());
+        dateText.setText(content.getWriteDate());
+        heartText.setText(String.valueOf(content.getHeartCount()));
+        bookmarkText.setText(String.valueOf(content.getBookmarkCount()));
+        nickNameText.setText(content.getUserNicname());
+    }
+
+    private void getComments(String code) {
+        //# 댓글 칭호 가져오는거 해야함!
+        //# 댓글에 북마크 기능이 있나염???
+        Log.i("Ttt", code);
+        Call<String> call = apiInterface.getScriptComment(code);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                String result = response.body().toString();
+                try {
+                    JSONObject resultObj = new JSONObject(result);
+                    JSONArray report = resultObj.getJSONArray("REPORT");
+                    voices.clear();
+                    for(int i=0; i<report.length(); i++) {
+                        JSONObject object = report.getJSONObject(i);
+                        Voice voice = new Voice();
+                        voice.setCode(object.getString("comment_seq"));
+                        voice.setHeartCount(Integer.parseInt(object.getString("comment_likes")));
+                        voice.setFileName(object.getString("comment_file_name"));
+                        voice.setWriter(object.getString("user_nick"));
+                        voices.add(voice);
+                    }
+                    adapter = new VoiceAdapter(getApplicationContext(), voices, btnClickHandler);
+                    listView.setAdapter(adapter);
+                } catch (JSONException e) {
+                    Toast.makeText(getApplicationContext(), "글 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     Handler btnClickHandler = new Handler() {
