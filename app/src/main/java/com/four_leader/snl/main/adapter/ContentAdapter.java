@@ -22,15 +22,16 @@ public class ContentAdapter extends BaseAdapter {
     public Context context;
     public ArrayList<MainContent> arrayList;
     LayoutInflater inflater;
-    Handler togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler;
+    Handler togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler, likeHanlder;
 
-    public ContentAdapter(Context context, ArrayList<MainContent> dataList, Handler togglePlayLayoutHandler, Handler itemSelectHandler, Handler bookmarkClickHandler) {
+    public ContentAdapter(Context context, ArrayList<MainContent> dataList, Handler togglePlayLayoutHandler, Handler itemSelectHandler, Handler bookmarkClickHandler, Handler likeHanlder) {
         super();
         this.context = context;
         arrayList = dataList;
         this.togglePlayLayoutHandler = togglePlayLayoutHandler;
         this.itemSelectHandler = itemSelectHandler;
         this.bookmarkClickHandler = bookmarkClickHandler;
+        this.likeHanlder = likeHanlder;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -74,6 +75,7 @@ public class ContentAdapter extends BaseAdapter {
         holder.commentText = convertView.findViewById(R.id.commentText);
         holder.bookmarkText = convertView.findViewById(R.id.bookmarkText);
         holder.bookmarkView = convertView.findViewById(R.id.bookmarkView);
+        holder.likeLayout = convertView.findViewById(R.id.likeLayout);
 
         if(String.valueOf(position).equals("")) {
             Log.i("dadada", "에러래ㅠㅠ");
@@ -84,8 +86,9 @@ public class ContentAdapter extends BaseAdapter {
         holder.playBtn.setTag(position);
         holder.itemLayout.setTag(position);
         holder.bookmarkView.setTag(position);
+        holder.likeLayout.setTag(position);
 
-        MainContent data = arrayList.get(position);
+        final MainContent data = arrayList.get(position);
 
         holder.categoryText.setText(data.getCategory());
         holder.endDateText.setText("D - "+data.getdDate());
@@ -130,6 +133,20 @@ public class ContentAdapter extends BaseAdapter {
             }
         });
 
+        holder.likeLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Message msg = new Message();
+                msg.what = (int) view.getTag();
+                if(data.isLiked()) {
+                    msg.obj = false;
+                } else {
+                    msg.obj = true;
+                }
+                likeHanlder.sendMessage(msg);
+            }
+        });
+
         return convertView;
     }
 
@@ -138,6 +155,6 @@ public class ContentAdapter extends BaseAdapter {
                 nameText, dateText, heartText, commentText, bookmarkText;
         public LinearLayout playView;
         public ImageButton playBtn;
-        public LinearLayout itemLayout, bookmarkView;
+        public LinearLayout itemLayout, bookmarkView, likeLayout;
     }
 }

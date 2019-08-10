@@ -22,7 +22,7 @@ public interface APIInterface {
 
     @GET("USER/login.php")
     Call<String> doLogin(@Query("user_id") String email,
-                             @Query("user_pw") String pwd
+                         @Query("user_pw") String pwd
     );
 
     // 전체 카테고리 목록 조회
@@ -53,5 +53,38 @@ public interface APIInterface {
 
     // 해당 게시글의 댓글 목록 조회
     @GET("SCRIPT/DetailsOfScript.php")
-    Call<String> getScriptComment(@Query("script_seq") String scriptSeq);
+    Call<String> getScriptComment(@Query("scriptSeq") String scriptSeq);
+
+    // 글쓰기
+    @GET("SCRIPT/writeScript.php")
+    Call<String> writeScript(@Query("user_seq") String userSeq,
+                             @Query("script_title") String title,
+                             @Query("script_content") String content,
+                             @Query("script_category_code") int categorySeq);
+
+    // 글 좋아요
+    @GET("SCRIPT/addLike.php")
+    Call<String> addLike(@Query("user_seq") String userSeq,
+                         @Query("script_seq") String scriptSeq);
+
+    // 글 좋아요 취소
+    @GET("SCRIPT/deleteLike.php")
+    Call<String> deleteLike(@Query("user_seq") String userSeq,
+                            @Query("script_seq") String scriptSeq);
+
+    // 글 신고
+    @GET("SCRIPT/reportScript.php")
+    Call<String> reportScript(@Query("script_seq") String scriptSeq,
+                              @Query("reporting_seq") String reportingSeq,
+                              @Query("reported_seq") String reportedSeq,
+                              @Query("report_memo") String reportMemo);
+
+    // 댓글 신고
+    @GET("COMMENT/reportComment.php")
+    Call<String> reportComment(@Query("comment_seq") String commentSeq,
+                               @Query("reporting_seq") String reportingSeq,
+                               @Query("reported_seq") String reportedSeq,
+                               @Query("report_memo") String reportMemo);
+
+
 }

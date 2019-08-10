@@ -22,13 +22,14 @@ public class VoiceAdapter extends BaseAdapter {
     public Context context;
     public ArrayList<Voice> arrayList;
     LayoutInflater inflater;
-    Handler btnClickHandler;
+    Handler btnClickHandler, reportHandler;
 
-    public VoiceAdapter(Context context, ArrayList<Voice> dataList, Handler btnClickHandler) {
+    public VoiceAdapter(Context context, ArrayList<Voice> dataList, Handler btnClickHandler, Handler reportHandler) {
         super();
         this.context = context;
         arrayList = dataList;
         this.btnClickHandler = btnClickHandler;
+        this.reportHandler = reportHandler;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -60,23 +61,21 @@ public class VoiceAdapter extends BaseAdapter {
         holder.nameText = convertView.findViewById(R.id.nameText);
         holder.speakerBtn = convertView.findViewById(R.id.speakerBtn);
         holder.heartBtn = convertView.findViewById(R.id.heartBtn);
-        holder.bookmarkBtn = convertView.findViewById(R.id.bookmarkBtn);
         holder.heartCountText = convertView.findViewById(R.id.heartCountText);
-        holder.bookmarkCountText = convertView.findViewById(R.id.bookmarkCountText);
         holder.backgroundLayout = convertView.findViewById(R.id.backgroundLayout);
+        holder.reportBtn = convertView.findViewById(R.id.reportBtn);
 
         holder.speakerBtn.setTag(position);
         holder.heartBtn.setTag(position);
-        holder.bookmarkBtn.setTag(position);
+        holder.reportBtn.setTag(position);
 
         Voice data = arrayList.get(position);
 
         holder.nameText.setText(data.getWriter());
-        holder.bookmarkCountText.setText(String.valueOf(data.getBookmarkCount()));
         holder.heartCountText.setText(String.valueOf(data.getHeartCount()));
 
-        if(data.isItemClick()) {
-            holder.backgroundLayout.setBackgroundColor(Color.parseColor("#cdcdcd"));
+        if (data.isItemClick()) {
+            holder.backgroundLayout.setBackgroundColor(Color.parseColor("#E6E8EA"));
         } else {
             holder.backgroundLayout.setBackgroundColor(Color.TRANSPARENT);
         }
@@ -101,13 +100,12 @@ public class VoiceAdapter extends BaseAdapter {
             }
         });
 
-        holder.bookmarkBtn.setOnClickListener(new View.OnClickListener() {
+        holder.reportBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Message msg = new Message();
                 msg.what = (int) view.getTag();
-                msg.obj = "bookmark";
-                btnClickHandler.sendMessage(msg);
+                reportHandler.sendMessage(msg);
             }
         });
 
@@ -115,8 +113,8 @@ public class VoiceAdapter extends BaseAdapter {
     }
 
     public class ViewHolder {
-        public TextView nameText, heartCountText, bookmarkCountText;
-        public ImageButton speakerBtn, heartBtn, bookmarkBtn;
+        public TextView nameText, heartCountText, reportBtn;
+        public ImageButton speakerBtn, heartBtn;
         public LinearLayout backgroundLayout;
     }
 

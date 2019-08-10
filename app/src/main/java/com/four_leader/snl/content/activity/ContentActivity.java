@@ -7,7 +7,6 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -18,8 +17,11 @@ import android.widget.Toast;
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.adapter.VoiceAdapter;
 import com.four_leader.snl.content.vo.Voice;
+import com.four_leader.snl.login.activity.LoginActivity;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.MainContent;
+import com.four_leader.snl.onetime.ReportPopUp;
+import com.four_leader.snl.onetime.SetDefaultCategoryActivity;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
 
@@ -27,10 +29,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -44,7 +43,7 @@ public class ContentActivity extends AppCompatActivity {
     ImageButton closePlayViewBtn, backBtn, recordBtn;
     ListView listView;
     MainContent content;
-    TextView titleText, contentText, dateText, heartText, bookmarkText, nickNameText;
+    TextView titleText, contentText, dateText, heartText, bookmarkText, nickNameText, reportBtn;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     @Override
@@ -63,6 +62,7 @@ public class ContentActivity extends AppCompatActivity {
         heartText = findViewById(R.id.heartText);
         bookmarkText = findViewById(R.id.bookmarkText);
         nickNameText = findViewById(R.id.nickNameText);
+        reportBtn = findViewById(R.id.reportBtn);
 
         content = (MainContent) getIntent().getSerializableExtra("content");
         voices = new ArrayList<>();
@@ -92,6 +92,16 @@ public class ContentActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        reportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ContentActivity.this, ReportPopUp.class);
+                intent.putExtra("type", "script");
+                intent.putExtra("content", content);
+                startActivity(intent);
+            }
+        });
     }
 
     private void setContent() {
@@ -104,9 +114,6 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void getComments(String code) {
-        //# 댓글 칭호 가져오는거 해야함!
-        //# 댓글에 북마크 기능이 있나염???
-        Log.i("Ttt", code);
         Call<String> call = apiInterface.getScriptComment(code);
         call.enqueue(new Callback<String>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -123,10 +130,15 @@ public class ContentActivity extends AppCompatActivity {
                         voice.setCode(object.getString("comment_seq"));
                         voice.setHeartCount(Integer.parseInt(object.getString("comment_likes")));
                         voice.setFileName(object.getString("comment_file_name"));
-                        voice.setWriter(object.getString("user_nick"));
+                        voice.setWriterSeq(object.getString("user_seq"));
+                        String userName = object.getString("user_nick");
+                        if(!object.getString("titleinfo_title").equals("null")) {
+                            userName = object.getString("titleinfo_title") + " " + userName;
+                        }
+                        voice.setWriter(userName);
                         voices.add(voice);
                     }
-                    adapter = new VoiceAdapter(getApplicationContext(), voices, btnClickHandler);
+                    adapter = new VoiceAdapter(getApplicationContext(), voices, btnClickHandler, reportHandler);
                     listView.setAdapter(adapter);
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "글 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -168,14 +180,26 @@ public class ContentActivity extends AppCompatActivity {
 
             } else if(String.valueOf(msg.obj).equals("heart")) {
                 voices.get(msg.what).setHeartClick(!voices.get(msg.what).isHeartClick());
-            } else if(String.valueOf(msg.obj).equals("bookmark")) {
-                Toast.makeText(getApplicationContext(), "댓글을 북마크했습니다.", Toast.LENGTH_SHORT).show();
             }
             adapter.notifyDataSetChanged();
         }
     };
 
-    //#
+    Handler reportHandler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+
+            int pos = msg.what;
+
+            Intent intent = new Intent(ContentActivity.this, ReportPopUp.class);
+            intent.putExtra("type", "comment");
+            intent.putExtra("voice", voices.get(pos));
+            intent.putExtra("content", content);
+            startActivity(intent);
+        }
+    };
+
     private void playVoice(String code) {
         playView.setVisibility(View.VISIBLE);
     }

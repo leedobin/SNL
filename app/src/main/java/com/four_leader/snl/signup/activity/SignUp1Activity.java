@@ -46,7 +46,6 @@ public class SignUp1Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Log.i("ttt", "random : " + number);
         setContentView(R.layout.activity_sign_up1);
 
         nextBtn = findViewById(R.id.nextBtn);

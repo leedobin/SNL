@@ -62,9 +62,9 @@
         android:layout_above="@+id/bottomLayout"
         android:layout_below="@+id/searchLayout"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="10dp"
         android:divider="@android:color/transparent" />
 
     <LinearLayout
@@ -150,12 +150,14 @@
     </LinearLayout>
 
     <ImageButton
+        android:id="@+id/topBtn"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_below="@+id/searchLayout"
         android:layout_centerInParent="true"
         android:layout_marginTop="10dp"
         android:background="@drawable/orange_circle"
-        android:src="@drawable/ic_top_arrow" />
+        android:src="@drawable/ic_top_arrow"
+        android:visibility="gone" />
 
 </RelativeLayout>

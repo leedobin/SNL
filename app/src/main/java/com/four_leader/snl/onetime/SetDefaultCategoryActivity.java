@@ -107,7 +107,7 @@ public class SetDefaultCategoryActivity extends Activity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
-                    Log.i("ttt", response.body().toString());
+
                     JSONArray result = new JSONArray(response.body().toString());
                     categories.clear();
                     for(int i=0; i<result.length(); i++) {
@@ -142,7 +142,7 @@ public class SetDefaultCategoryActivity extends Activity {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 try {
-                    Log.i("ttt", response.body().toString());
+
                     JSONArray result = new JSONArray(response.body().toString());
                     categories.clear();
                     for(int i=0; i<result.length(); i++) {

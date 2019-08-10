@@ -27,19 +27,21 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:text="글 보기"
+            android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="18dp"
-            android:layout_height="wrap_content" />
+            android:text="글 보기"
+            android:textColor="#737373"
+            android:textSize="18dp" />
 
     </RelativeLayout>
 
     <TextView
+        android:id="@+id/titleText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="10dp"
-        android:id="@+id/titleText"
         android:text="TITLE"
+        android:textColor="#737373"
         android:textSize="18dp"
         android:textStyle="bold" />
 
@@ -51,32 +53,36 @@
         android:paddingRight="10dp">
 
         <TextView
+            android:id="@+id/nickNameText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/nickNameText"
             android:text="닉네임영역"
+            android:textColor="#737373"
             android:textSize="15dp" />
 
         <TextView
-            android:layout_width="wrap_content"
             android:id="@+id/dateText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="2019-10-10 10:10:10"
+            android:textColor="#737373"
             android:textSize="15dp" />
     </LinearLayout>
 
     <TextView
+        android:id="@+id/contentText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/contentText"
         android:padding="10dp"
         android:text="content area"
+        android:textColor="#737373"
         android:textSize="15dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:orientation="horizontal">
 
         <LinearLayout
@@ -94,10 +100,11 @@
                 android:src="@drawable/ic_heart_off" />
 
             <TextView
-                android:layout_width="wrap_content"
                 android:id="@+id/heartText"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
+                android:textColor="#737373"
                 android:textSize="15sp" />
         </LinearLayout>
 
@@ -131,12 +138,20 @@
                 android:src="@drawable/ic_bookmark_off" />
 
             <TextView
+                android:id="@+id/bookmarkText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="0"
-                android:id="@+id/bookmarkText"
+                android:textColor="#737373"
                 android:textSize="15sp" />
         </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:id="@+id/reportBtn"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="10dp"
+            android:text="신고" />
     </LinearLayout>
 
     <ListView

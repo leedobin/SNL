@@ -15,6 +15,7 @@ public class MainContent implements Serializable {
     private String fileName;
     private boolean isPlayLayoutOpen;
     private boolean isBookmarked;
+    private boolean isLiked;
     private String writeDate;
     private String dueDate;
     private int dDate;
@@ -22,6 +23,15 @@ public class MainContent implements Serializable {
     public MainContent() {
         isPlayLayoutOpen = false;
         isBookmarked = false;
+        isLiked = false;
+    }
+
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 
     public int getdDate() {

@@ -1,17 +1,18 @@
 package com.four_leader.snl.content.vo;
 
-public class Voice {
+import java.io.Serializable;
+
+public class Voice implements Serializable {
     private String fileName;
     private String writer;
     private int heartCount;
-    private int bookmarkCount;
     private String code;
     private boolean heartClick;
     private boolean itemClick;
+    private String writerSeq;
 
     public Voice() {
         heartCount = 0;
-        bookmarkCount = 0;
         heartClick = false;
         itemClick = false;
     }
@@ -48,14 +49,6 @@ public class Voice {
         this.code = code;
     }
 
-    public int getBookmarkCount() {
-        return bookmarkCount;
-    }
-
-    public void setBookmarkCount(int bookmarkCount) {
-        this.bookmarkCount = bookmarkCount;
-    }
-
     public boolean isHeartClick() {
         return heartClick;
     }
@@ -70,5 +63,13 @@ public class Voice {
 
     public void setItemClick(boolean itemClick) {
         this.itemClick = itemClick;
+    }
+
+    public String getWriterSeq() {
+        return writerSeq;
+    }
+
+    public void setWriterSeq(String writerSeq) {
+        this.writerSeq = writerSeq;
     }
 }

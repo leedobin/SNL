@@ -1,9 +1,12 @@
 package com.four_leader.snl.main.fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,15 +17,24 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.activity.ContentActivity;
 import com.four_leader.snl.main.adapter.ContentAdapter;
 import com.four_leader.snl.main.vo.Category;
 import com.four_leader.snl.main.vo.MainContent;
+import com.four_leader.snl.util.APIClient;
+import com.four_leader.snl.util.APIInterface;
 import com.four_leader.snl.write.activity.WriteActivity;
 
 import java.util.ArrayList;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class LibraryFragment extends Fragment {
 
@@ -37,7 +49,7 @@ public class LibraryFragment extends Fragment {
     LinearLayout setLayout;
     ContentAdapter contentAdapter;
     Button setContentOptionBtn;
-
+    APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     public LibraryFragment() {
         // Required empty public constructor
@@ -121,7 +133,7 @@ public class LibraryFragment extends Fragment {
             contents.add(content);
         }
 
-        contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
+        contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler, likeHanlder);
         listView.setAdapter(contentAdapter);
     }
 
@@ -162,5 +174,61 @@ public class LibraryFragment extends Fragment {
             contentAdapter.notifyDataSetChanged();
         }
     };
+
+    Handler likeHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int position = msg.what;
+            boolean type = (boolean) msg.obj;
+            if(type) {
+                addLike(position);
+            } else {
+                deleteLike(position);
+            }
+        }
+    };
+
+    private void addLike(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.addLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setLiked(true);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteLike(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.deleteLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setLiked(false);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }

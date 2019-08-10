@@ -26,12 +26,13 @@
             android:textSize="18dp" />
 
         <TextView
+            android:id="@+id/saveBtn"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="임시저장"
-            android:layout_toLeftOf="@+id/writeBtn"
             android:layout_marginRight="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_toLeftOf="@+id/writeBtn"
+            android:text="임시저장" />
 
         <ImageButton
             android:id="@+id/writeBtn"
@@ -60,9 +61,9 @@
         android:orientation="horizontal">
 
         <Spinner
+            android:id="@+id/categorySpinner1"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:id="@+id/categorySpinner1"
             android:layout_marginRight="10dp"
             android:layout_weight="1" />
 
@@ -74,6 +75,7 @@
             android:layout_weight="1" />
 
         <ImageButton
+            android:id="@+id/saveListBtn"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:background="@android:color/transparent"
@@ -81,14 +83,15 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/titleEdit"
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginBottom="10dp"
-        android:maxLines="1"
-        android:hint="제목을 입력해주세요."
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@drawable/rect_round_gray"
+        android:hint="제목을 입력해주세요."
+        android:maxLines="1"
         android:padding="5dp" />
 
     <LinearLayout
@@ -125,6 +128,7 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/contentEdit"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginLeft="10dp"
@@ -132,28 +136,29 @@
         android:layout_weight="1"
         android:background="@drawable/rect_round_gray"
         android:gravity="top"
-        android:textSize="15dp"
         android:hint="내용을 입력해주세요."
-        android:padding="5dp" />
+        android:padding="5dp"
+        android:textSize="15dp" />
 
     <EditText
+        android:id="@+id/hashtagEdit"
         android:layout_width="match_parent"
+        android:layout_height="30dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:background="@drawable/rect_round_gray"
-        android:padding="5dp"
-        android:hint="해시태그"
-        android:textSize="13dp"
         android:layout_marginTop="10dp"
-        android:layout_height="30dp" />
+        android:background="@drawable/rect_round_gray"
+        android:hint="해시태그"
+        android:padding="5dp"
+        android:textSize="13dp" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginBottom="3dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginBottom="3dp"
+        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         android:gravity="left|center_vertical"
         android:text="글쓰기 약관" />

@@ -12,7 +12,6 @@ import android.widget.ListView;
 
 import com.four_leader.snl.R;
 import com.four_leader.snl.content.activity.ContentActivity;
-import com.four_leader.snl.notice.activity.NoticeActivity;
 import com.four_leader.snl.notice.adapter.NoticeAdapter;
 import com.four_leader.snl.notice.vo.Notice;
 

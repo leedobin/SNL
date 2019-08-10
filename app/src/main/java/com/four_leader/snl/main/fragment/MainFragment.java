@@ -10,9 +10,11 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -56,8 +58,8 @@ public class MainFragment extends Fragment {
     ArrayList<MainContent> contents;
 
     ListView listView;
-    ImageButton setBtn;
-    LinearLayout setLayout, writeBtn;
+    ImageButton setBtn, topBtn;
+    LinearLayout setLayout;
     ContentAdapter contentAdapter;
     Button setContentOptionBtn;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
@@ -94,6 +96,7 @@ public class MainFragment extends Fragment {
         setBtn = v.findViewById(R.id.setBtn);
         setLayout = v.findViewById(R.id.setLayout);
         setContentOptionBtn = v.findViewById(R.id.setContentOptionBtn);
+        topBtn = v.findViewById(R.id.topBtn);
 
         contents = new ArrayList<>();
         step2Categories = new ArrayList<>();
@@ -127,6 +130,18 @@ public class MainFragment extends Fragment {
 
 
         getMainPage();
+
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                //# topBtn 보였다 안보였다 이벤트 추가해야 함!
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
+            }
+        });
 
         return v;
     }
@@ -250,7 +265,7 @@ public class MainFragment extends Fragment {
 
 
                     }
-                    contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler);
+                    contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler, likeHanlder);
                     listView.setAdapter(contentAdapter);
                 } catch (JSONException e) {
                     Toast.makeText(getActivity(), "글 목록을 가져올 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -319,5 +334,61 @@ public class MainFragment extends Fragment {
             selectCategory(step2Categories.get(position).getSeq());
         }
     };
+
+    Handler likeHanlder = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            int position = msg.what;
+            boolean type = (boolean) msg.obj;
+            if(type) {
+                addLike(position);
+            } else {
+                deleteLike(position);
+            }
+        }
+    };
+
+    private void addLike(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.addLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setLiked(true);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteLike(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.deleteLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setLiked(false);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
 }

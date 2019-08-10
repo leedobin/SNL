@@ -22,12 +22,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".license.activity.LicenseActivity" />
-        <activity android:name=".signup.activity.SignUp1Activity" android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity android:name=".signup.activity.SignUp2Activity" android:windowSoftInputMode="stateAlwaysVisible" />
-        <activity android:name=".license.activity.LicenseDetailActivity" />
-        <activity android:name=".signup.activity.SignUp3Activity" android:windowSoftInputMode="stateAlwaysVisible" />
         <activity
-            android:name=".onetime.SetDefaultCategoryActivity" />
+            android:name=".signup.activity.SignUp1Activity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity
+            android:name=".signup.activity.SignUp2Activity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".license.activity.LicenseDetailActivity" />
+        <activity
+            android:name=".signup.activity.SignUp3Activity"
+            android:windowSoftInputMode="stateAlwaysVisible" />
+        <activity android:name=".onetime.SetDefaultCategoryActivity" />
         <activity android:name=".login.activity.LoginActivity" />
         <activity android:name=".main.activity.MainActivity" />
         <activity android:name=".content.activity.ContentActivity" />
@@ -37,9 +42,12 @@
         <activity
             android:name=".onetime.PushAuthActivity"
             android:theme="@android:style/Theme.Dialog" />
-        <activity android:name=".notice.activity.NoticeActivity" />
         <activity android:name=".setting.activity.SettingActivity" />
         <activity android:name=".container.activity.ContainerActivity" />
+        <activity android:name=".write.activity.SaveListActivity" />
+        <activity
+            android:name=".onetime.ReportPopUp"
+            android:theme="@android:style/Theme.Dialog" />
     </application>
 
 </manifest>
