@@ -319,10 +319,13 @@ public class LibraryFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if(contents.get(msg.what).isBookmarked()) {
-                contents.get(msg.what).setBookmarked(!contents.get(msg.what).isBookmarked());
+            int position = msg.what;
+            boolean type = (boolean) msg.obj;
+            if(type) {
+                addBookmark(position);
+            } else {
+                deleteBookmark(position);
             }
-            contentAdapter.notifyDataSetChanged();
         }
     };
 
@@ -373,6 +376,51 @@ public class LibraryFragment extends Fragment {
             public void onResponse(Call<String> call, Response<String> response) {
                 contents.get(position).setLiked(false);
                 contents.get(position).setHeartCount(contents.get(position).getHeartCount() - 1);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void addBookmark(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        String userId = preferences.getString("user_id", "");
+        Call<String> call = apiInterface.share(userSeq, scriptCode, userId);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setBookmarked(true);
+                contents.get(position).setBookmarkCount(contents.get(position).getBookmarkCount() + 1);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void deleteBookmark(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.unshare(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contents.get(position).setBookmarked(false);
+                contents.get(position).setBookmarkCount(contents.get(position).getBookmarkCount() - 1);
                 contentAdapter.notifyDataSetChanged();
             }
 

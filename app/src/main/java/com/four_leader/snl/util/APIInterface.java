@@ -72,7 +72,6 @@ public interface APIInterface {
     @GET("SCRIPT/unlike.php")
     Call<String> deleteLike(@Query("user_seq") String userSeq,
                             @Query("script_seq") String scriptSeq);
-
     // 글 공유
     @GET("SCRIPT/share.php")
     Call<String> share(@Query("user_seq") String userSeq,
