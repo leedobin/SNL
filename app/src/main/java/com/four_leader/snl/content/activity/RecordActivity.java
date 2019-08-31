@@ -150,7 +150,6 @@ public class RecordActivity extends AppCompatActivity {
                 commentFilename=uploadFileName;
 
 
-
                 recordInfo(commentSeq, scriptSeq, userSeq, commentFilename);
             }
         }).start();
