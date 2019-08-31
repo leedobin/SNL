@@ -143,10 +143,12 @@ public class RecordActivity extends AppCompatActivity {
                 });
                 uploadFile(uploadFilePath + uploadFileName);
 
+
                 commentSeq="20";
                 scriptSeq="21";
                 userSeq="22";
                 commentFilename=uploadFileName;
+
 
                 recordInfo(commentSeq, scriptSeq, userSeq, commentFilename);
             }
