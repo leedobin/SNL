@@ -1,6 +1,7 @@
 package com.four_leader.snl.content.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
@@ -45,6 +46,7 @@ public class ContentActivity extends AppCompatActivity {
     MainContent content;
     TextView titleText, contentText, dateText, heartText, bookmarkText, nickNameText, reportBtn;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
+    ImageButton heartIcon, shareIcon;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +65,8 @@ public class ContentActivity extends AppCompatActivity {
         bookmarkText = findViewById(R.id.bookmarkText);
         nickNameText = findViewById(R.id.nickNameText);
         reportBtn = findViewById(R.id.reportBtn);
+        heartIcon = findViewById(R.id.heartIcon);
+        shareIcon = findViewById(R.id.shareIcon);
 
         content = (MainContent) getIntent().getSerializableExtra("content");
         voices = new ArrayList<>();
@@ -102,6 +106,13 @@ public class ContentActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        heartIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void setContent() {
@@ -111,6 +122,18 @@ public class ContentActivity extends AppCompatActivity {
         heartText.setText(String.valueOf(content.getHeartCount()));
         bookmarkText.setText(String.valueOf(content.getBookmarkCount()));
         nickNameText.setText(content.getUserNicname());
+
+        if(content.isLiked()) {
+            heartIcon.setImageResource(R.drawable.ic_heart_on);
+        } else {
+            heartIcon.setImageResource(R.drawable.ic_heart_on);
+        }
+
+        if(content.isBookmarked()) {
+            shareIcon.setImageResource(R.drawable.ic_bookmark_on);
+        } else {
+            shareIcon.setImageResource(R.drawable.ic_bookmark_off);
+        }
     }
 
     private void getComments(String code) {

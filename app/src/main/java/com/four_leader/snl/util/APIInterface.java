@@ -44,7 +44,8 @@ public interface APIInterface {
 
     // 카테고리 시퀀스에 따라 글 목록 조회(메인)
     @GET("SCRIPT/scriptList.php")
-    Call<String> getScriptByCateSeq(@Query("category") String categorySeq);
+    Call<String> getScriptByCateSeq(@Query("category_seq") String categorySeq,
+                                    @Query("user_seq") String userSeq);
 
     // 푸쉬권한 동의/거절
     @GET("USER/push_permission.php")
@@ -63,13 +64,24 @@ public interface APIInterface {
                              @Query("script_category_code") int categorySeq);
 
     // 글 좋아요
-    @GET("SCRIPT/addLike.php")
+    @GET("SCRIPT/like.php")
     Call<String> addLike(@Query("user_seq") String userSeq,
                          @Query("script_seq") String scriptSeq);
 
     // 글 좋아요 취소
-    @GET("SCRIPT/deleteLike.php")
+    @GET("SCRIPT/unlike.php")
     Call<String> deleteLike(@Query("user_seq") String userSeq,
+                            @Query("script_seq") String scriptSeq);
+
+    // 글 공유
+    @GET("SCRIPT/share.php")
+    Call<String> share(@Query("user_seq") String userSeq,
+                       @Query("script_seq") String scriptSeq,
+                       @Query("user_id") String userId);
+
+    // 글 공유 취소
+    @GET("SCRIPT/unshare.php")
+    Call<String> unshare(@Query("user_seq") String userSeq,
                             @Query("script_seq") String scriptSeq);
 
     // 글 신고
@@ -87,4 +99,19 @@ public interface APIInterface {
                                @Query("report_memo") String reportMemo);
 
 
+    // 서재 - 내글
+    @GET("SCRIPT/myLib.php")
+    Call<String> getMyLib(@Query("user_seq") String userSeq);
+
+    // 서재 - 공유
+    @GET("SCRIPT/shareLib.php")
+    Call<String> getShareLib(@Query("user_seq") String userSeq);
+
+    // 알람 목록 조회
+    @GET("ALARM/alarmList.php")
+    Call<String> getAlarmList(@Query("user_seq") String userSeq);
+
+    // 알람 읽음 처리
+    @GET("ALARM/alarmRead.php")
+    Call<String> setAlarmRead(@Query("alarm_seq") String alarmSeq);
 }

@@ -113,6 +113,7 @@
                             android:orientation="horizontal">
 
                             <ImageView
+                                android:id="@+id/heartIcon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="3dp"
@@ -158,6 +159,7 @@
                             android:orientation="horizontal">
 
                             <ImageView
+                                android:id="@+id/shareIcon"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="3dp"

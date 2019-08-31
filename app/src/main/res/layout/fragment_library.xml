@@ -39,13 +39,45 @@
                 android:src="@drawable/ic_search" />
         </LinearLayout>
 
+    </LinearLayout>
 
-        <ImageButton
-            android:id="@+id/setBtn"
-            android:layout_width="40dp"
-            android:layout_height="match_parent"
-            android:background="@drawable/main_type_btn"
-            android:src="@drawable/ic_menu" />
+    <LinearLayout
+        android:id="@+id/optionLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/searchLayout"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/rect_option"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/mYButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="내 글" />
+
+            <ImageView
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="#cdcdcd" />
+
+            <Button
+                android:layout_width="0dp"
+                android:id="@+id/shareButton"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="공유 글" />
+        </LinearLayout>
     </LinearLayout>
 
     <ListView
@@ -53,99 +85,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@+id/bottomLayout"
-        android:layout_below="@+id/searchLayout"
+        android:layout_below="@+id/optionLayout"
         android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="5dp"
         android:layout_marginLeft="5dp"
         android:divider="@android:color/transparent" />
 
-    <LinearLayout
-        android:id="@+id/setLayout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/searchLayout"
-        android:layout_marginRight="15dp"
-        android:background="#CC000000"
-        android:orientation="vertical"
-        android:padding="10dp">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="글"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="음성"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/view2"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginBottom="10dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="My"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-
-            <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp" />
-
-            <TextView
-                android:layout_width="50dp"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Other"
-                android:textColor="#ffffff"
-                android:textSize="15sp" />
-        </LinearLayout>
-
-
-        <Button
-            android:id="@+id/setContentOptionBtn"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="#cdcdcd"
-            android:text="OK"
-            android:textSize="15sp" />
-    </LinearLayout>
-
     <ImageButton
         android:layout_width="40dp"
+        android:id="@+id/topBtn"
         android:layout_height="40dp"
         android:layout_below="@+id/searchLayout"
         android:layout_centerInParent="true"

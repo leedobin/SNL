@@ -177,24 +177,28 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void getMainPage() {
+        writeBtn.setVisibility(View.VISIBLE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, mainFragment).commit();
     }
 
     private void getLibraryPage() {
+        writeBtn.setVisibility(View.VISIBLE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, libraryFragment).commit();
     }
 
     private void getNoticePage() {
+        writeBtn.setVisibility(View.GONE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, noticeFragment).commit();
     }
 
     private void getSettingPage() {
+        writeBtn.setVisibility(View.GONE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, settingFragment).commit();

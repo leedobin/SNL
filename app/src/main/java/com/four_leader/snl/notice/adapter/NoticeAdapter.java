@@ -20,13 +20,11 @@ public class NoticeAdapter extends BaseAdapter {
     public Context context;
     public ArrayList<Notice> arrayList;
     LayoutInflater inflater;
-    Handler clickItem;
 
-    public NoticeAdapter(Context context, ArrayList<Notice> dataList, Handler clickItem) {
+    public NoticeAdapter(Context context, ArrayList<Notice> dataList) {
         super();
         this.context = context;
         arrayList = dataList;
-        this.clickItem = clickItem;
         inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -61,15 +59,9 @@ public class NoticeAdapter extends BaseAdapter {
         Notice data = arrayList.get(position);
         holder.textView.setText(data.getMsg());
 
-        holder.textView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Message message = new Message();
-                message.what = (int) view.getTag();
-                clickItem.sendMessage(message);
-            }
-        });
-
+        if(data.getRead().equals("Y")) {
+            holder.textView.setBackgroundColor(Color.parseColor("#cdcdcd"));
+        }
 
         return convertView;
     }

@@ -85,7 +85,7 @@
     <EditText
         android:id="@+id/titleEdit"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
@@ -93,39 +93,6 @@
         android:hint="제목을 입력해주세요."
         android:maxLines="1"
         android:padding="5dp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:orientation="horizontal">
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_images" />
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="10dp"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_camera" />
-
-        <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_folder" />
-
-    </LinearLayout>
 
     <EditText
         android:id="@+id/contentEdit"
@@ -137,7 +104,7 @@
         android:background="@drawable/rect_round_gray"
         android:gravity="top"
         android:hint="내용을 입력해주세요."
-        android:padding="5dp"
+        android:padding="8dp"
         android:textSize="15dp" />
 
     <EditText
@@ -150,7 +117,8 @@
         android:background="@drawable/rect_round_gray"
         android:hint="해시태그"
         android:padding="5dp"
-        android:textSize="13dp" />
+        android:textSize="13dp"
+        android:visibility="gone" />
 
     <TextView
         android:layout_width="match_parent"

@@ -95,6 +95,7 @@
             <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:id="@+id/heartIcon"
                 android:layout_marginRight="3dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/ic_heart_off" />
@@ -132,6 +133,7 @@
 
             <ImageButton
                 android:layout_width="wrap_content"
+                android:id="@+id/shareIcon"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="3dp"
                 android:background="@android:color/transparent"

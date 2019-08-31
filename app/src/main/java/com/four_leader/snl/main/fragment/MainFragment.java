@@ -58,10 +58,8 @@ public class MainFragment extends Fragment {
     ArrayList<MainContent> contents;
 
     ListView listView;
-    ImageButton setBtn, topBtn;
-    LinearLayout setLayout;
+    ImageButton topBtn;
     ContentAdapter contentAdapter;
-    Button setContentOptionBtn;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
     ContainerActivity parentActivity;
@@ -93,15 +91,11 @@ public class MainFragment extends Fragment {
         categoryListView = v.findViewById(R.id.categoryListView);
         searchSpinner = v.findViewById(R.id.searchSpinner);
         listView = v.findViewById(R.id.listView);
-        setBtn = v.findViewById(R.id.setBtn);
-        setLayout = v.findViewById(R.id.setLayout);
-        setContentOptionBtn = v.findViewById(R.id.setContentOptionBtn);
         topBtn = v.findViewById(R.id.topBtn);
 
         contents = new ArrayList<>();
         step2Categories = new ArrayList<>();
 
-        setLayout.setVisibility(View.GONE);
         searchType = new ArrayList<>();
         searchType.add("글제목");
         searchType.add("글내용");
@@ -109,32 +103,16 @@ public class MainFragment extends Fragment {
         ArrayAdapter spinnerAdapter = new ArrayAdapter(getActivity(), R.layout.support_simple_spinner_dropdown_item, searchType);
         searchSpinner.setAdapter(spinnerAdapter);
 
-        setBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (setLayout.getVisibility() == View.VISIBLE) {
-                    setLayout.setVisibility(View.GONE);
-                } else {
-                    setLayout.setVisibility(View.VISIBLE);
-                    setLayout.setFocusable(true);
-                }
-            }
-        });
-
-        setContentOptionBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                setLayout.setVisibility(View.GONE);
-            }
-        });
-
-
         getMainPage();
 
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
-                //# topBtn 보였다 안보였다 이벤트 추가해야 함!
+                if (listView.getFirstVisiblePosition() > 0) {
+                    topBtn.setVisibility(View.VISIBLE);
+                } else {
+                    topBtn.setVisibility(View.GONE);
+                }
             }
 
             @Override
@@ -143,6 +121,12 @@ public class MainFragment extends Fragment {
             }
         });
 
+        topBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listView.smoothScrollToPosition(0);
+            }
+        });
         return v;
     }
 
@@ -212,7 +196,9 @@ public class MainFragment extends Fragment {
     }
 
     private void selectCategory(String cateSeq) {
-        Call<String> call = apiInterface.getScriptByCateSeq(cateSeq);
+        SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = pref.getString("user_seq", "");
+        Call<String> call = apiInterface.getScriptByCateSeq(cateSeq, userSeq);
         call.enqueue(new Callback<String>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -228,11 +214,6 @@ public class MainFragment extends Fragment {
                         JSONObject object = report.getJSONObject(i);
                         MainContent content = new MainContent();
 
-                        /*
-                            "scriptReported": "1",
-                            "commentLikes": "100"
-                         */
-
                         content.setCode(object.getString("scriptSeq"));
                         content.setWriterSeq(object.getString("userSeq"));
                         content.setWriteDate(object.getString("scriptDate"));
@@ -240,10 +221,10 @@ public class MainFragment extends Fragment {
                         content.setContent(object.getString("scriptContent"));
                         content.setDueDate(object.getString("scriptDueDate"));
                         content.setCategory(object.getString("categoryName"));
-
                         content.setHeartCount(Integer.parseInt(object.getString("scriptLikes")));
-                        //# 수정하기 content.setVoiceCount(0);
+                        content.setVoiceCount(Integer.parseInt(object.getString("commentCount")));
                         content.setBookmarkCount(Integer.parseInt(object.getString("scriptShare")));
+                        content.setFileName(object.getString("fileName"));
 
                         if (object.getString("titleInfoTitle") == "null") {
                             content.setUserNicname(object.getString("userNice"));
@@ -251,19 +232,26 @@ public class MainFragment extends Fragment {
                             content.setUserNicname(object.getString("titleInfoTitle") + " " + object.getString("userNice"));
                         }
 
+                        if (object.getString("likeYN").equals("Y")) {
+                            content.setLiked(true);
+                        } else {
+                            content.setLiked(false);
+                        }
+
+                        if (object.getString("shareYN").equals("Y")) {
+                            content.setBookmarked(true);
+                        } else {
+                            content.setBookmarked(false);
+                        }
+
                         Date nowDate = new Date();
                         String endStr = object.getString("scriptDueDate");
-
                         SimpleDateFormat transFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Date endDate = transFormat.parse(endStr);
                         long diff = endDate.getTime() - nowDate.getTime();
                         long diffDays = diff / (24 * 60 * 60 * 1000);
                         content.setdDate((int) diffDays);
-
-                        //# 인기 많은 댓글의 파일명 가져와야 함 content.setFileName("190223135932");
                         contents.add(content);
-
-
                     }
                     contentAdapter = new ContentAdapter(getActivity(), contents, togglePlayLayoutHandler, itemSelectHandler, bookmarkClickHandler, likeHanlder);
                     listView.setAdapter(contentAdapter);
@@ -314,8 +302,17 @@ public class MainFragment extends Fragment {
         @Override
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
-            if (contents.get(msg.what).isBookmarked()) {
-                contents.get(msg.what).setBookmarked(!contents.get(msg.what).isBookmarked());
+            int position = msg.what;
+            boolean type = (boolean) msg.obj;
+
+            if (type) {
+                contents.get(position).setBookmarkCount(contents.get(position).getBookmarkCount() + 1);
+                contents.get(position).setBookmarked(true);
+                share(position);
+            } else {
+                contents.get(position).setBookmarkCount(contents.get(position).getBookmarkCount() - 1);
+                contents.get(position).setBookmarked(false);
+                unshare(position);
             }
             contentAdapter.notifyDataSetChanged();
         }
@@ -341,9 +338,13 @@ public class MainFragment extends Fragment {
             super.handleMessage(msg);
             int position = msg.what;
             boolean type = (boolean) msg.obj;
-            if(type) {
+            if (type) {
+                contents.get(position).setHeartCount(contents.get(position).getHeartCount() + 1);
+                contents.get(position).setLiked(true);
                 addLike(position);
             } else {
+                contents.get(position).setHeartCount(contents.get(position).getHeartCount() - 1);
+                contents.get(position).setLiked(false);
                 deleteLike(position);
             }
         }
@@ -358,7 +359,6 @@ public class MainFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                contents.get(position).setLiked(true);
                 contentAdapter.notifyDataSetChanged();
             }
 
@@ -379,7 +379,48 @@ public class MainFragment extends Fragment {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
-                contents.get(position).setLiked(false);
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+
+    private void share(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        String userId = preferences.getString("user_id", "");
+        Call<String> call = apiInterface.share(userSeq, scriptCode, userId);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                contentAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getActivity(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void unshare(final int position) {
+        String scriptCode = contents.get(position).getCode();
+        SharedPreferences preferences = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.unshare(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
                 contentAdapter.notifyDataSetChanged();
             }
 

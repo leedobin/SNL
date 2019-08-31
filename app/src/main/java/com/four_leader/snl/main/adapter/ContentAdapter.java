@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -76,6 +77,8 @@ public class ContentAdapter extends BaseAdapter {
         holder.bookmarkText = convertView.findViewById(R.id.bookmarkText);
         holder.bookmarkView = convertView.findViewById(R.id.bookmarkView);
         holder.likeLayout = convertView.findViewById(R.id.likeLayout);
+        holder.heartIcon = convertView.findViewById(R.id.heartIcon);
+        holder.shareIcon = convertView.findViewById(R.id.shareIcon);
 
         if(String.valueOf(position).equals("")) {
             Log.i("dadada", "에러래ㅠㅠ");
@@ -99,6 +102,18 @@ public class ContentAdapter extends BaseAdapter {
         holder.heartText.setText(String.valueOf(data.getHeartCount()));
         holder.commentText.setText(String.valueOf(data.getVoiceCount()));
         holder.bookmarkText.setText(String.valueOf(data.getBookmarkCount()));
+
+        if(data.isLiked()) {
+            holder.heartIcon.setImageResource(R.drawable.ic_heart_on);
+        } else {
+            holder.heartIcon.setImageResource(R.drawable.ic_heart_off);
+        }
+
+        if(data.isBookmarked()) {
+            holder.shareIcon.setImageResource(R.drawable.ic_bookmark_on);
+        } else {
+            holder.shareIcon.setImageResource(R.drawable.ic_bookmark_off);
+        }
 
         if(data.isPlayLayoutOpen()) {
             holder.playView.setVisibility(View.VISIBLE);
@@ -129,6 +144,11 @@ public class ContentAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Message msg = new Message();
                 msg.what = (int) view.getTag();
+                if(data.isBookmarked()) {
+                    msg.obj = false;
+                } else {
+                    msg.obj = true;
+                }
                 bookmarkClickHandler.sendMessage(msg);
             }
         });
@@ -147,6 +167,8 @@ public class ContentAdapter extends BaseAdapter {
             }
         });
 
+
+
         return convertView;
     }
 
@@ -156,5 +178,6 @@ public class ContentAdapter extends BaseAdapter {
         public LinearLayout playView;
         public ImageButton playBtn;
         public LinearLayout itemLayout, bookmarkView, likeLayout;
+        public ImageView heartIcon, shareIcon;
     }
 }
