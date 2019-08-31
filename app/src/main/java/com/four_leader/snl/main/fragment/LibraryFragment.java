@@ -310,7 +310,7 @@ public class LibraryFragment extends Fragment {
         public void handleMessage(Message msg) {
             super.handleMessage(msg);
             Intent intent = new Intent(getActivity(), ContentActivity.class);
-            intent.putExtra("code", contents.get(msg.what).getCode());
+            intent.putExtra("content", contents.get(msg.what));
             startActivity(intent);
         }
     };
@@ -350,6 +350,7 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 contents.get(position).setLiked(true);
+                contents.get(position).setHeartCount(contents.get(position).getHeartCount() + 1);
                 contentAdapter.notifyDataSetChanged();
             }
 
@@ -371,6 +372,7 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onResponse(Call<String> call, Response<String> response) {
                 contents.get(position).setLiked(false);
+                contents.get(position).setHeartCount(contents.get(position).getHeartCount() - 1);
                 contentAdapter.notifyDataSetChanged();
             }
 
