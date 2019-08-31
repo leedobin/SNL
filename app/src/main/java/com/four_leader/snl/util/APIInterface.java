@@ -109,6 +109,7 @@ public interface APIInterface {
     // 알람 읽음 처리
     @GET("ALARM/alarmRead.php")
     Call<String> setAlarmRead(@Query("alarm_seq") String alarmSeq);
+
     //댓글 음성 파일 정보 전송
     @GET("COMMENT/writeComment.php")
     Call<String> recordInfo(@Query("comment_seq") String commentSeq,
