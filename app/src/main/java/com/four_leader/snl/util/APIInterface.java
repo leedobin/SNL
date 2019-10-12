@@ -1,9 +1,5 @@
 package com.four_leader.snl.util;
 
-import com.google.gson.JsonObject;
-
-import org.json.JSONObject;
-
 import java.util.List;
 
 import retrofit2.Call;
@@ -126,4 +122,11 @@ public interface APIInterface {
     // 알람 읽음 처리
     @GET("ALARM/alarmRead.php")
     Call<String> setAlarmRead(@Query("alarm_seq") String alarmSeq);
+
+    //댓글 음성 파일 정보 전송
+    @GET("COMMENT/writeComment.php")
+    Call<String> recordInfo(@Query("comment_seq") String commentSeq,
+                            @Query("script_seq") String scriptSeq,
+                            @Query("user_seq") String userSeq,
+                            @Query("comment_file_name") String commentFilename);
 }
