@@ -198,6 +198,8 @@ public class MainFragment extends Fragment {
     private void selectCategory(String cateSeq) {
         SharedPreferences pref = getActivity().getSharedPreferences("pref", MODE_PRIVATE);
         String userSeq = pref.getString("user_seq", "");
+        Log.i("ttt", cateSeq);
+        Log.i("ttt", userSeq);
         Call<String> call = apiInterface.getScriptByCateSeq(cateSeq, userSeq);
         call.enqueue(new Callback<String>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -210,6 +212,7 @@ public class MainFragment extends Fragment {
                     JSONObject resultObj = new JSONObject(result);
                     JSONArray report = resultObj.getJSONArray("REPORT");
                     contents.clear();
+                    Log.i("ttt", result);
                     for (int i = 0; i < report.length(); i++) {
                         JSONObject object = report.getJSONObject(i);
                         MainContent content = new MainContent();

@@ -22,8 +22,7 @@ public interface APIInterface {
 
     @GET("USER/login.php")
     Call<String> doLogin(@Query("user_id") String email,
-                         @Query("user_pw") String pwd
-    );
+                         @Query("user_pw") String pwd);
 
     // 전체 카테고리 목록 조회
     @GET("CATEGORY/get_category.php")
@@ -54,7 +53,8 @@ public interface APIInterface {
 
     // 해당 게시글의 댓글 목록 조회
     @GET("SCRIPT/DetailsOfScript.php")
-    Call<String> getScriptComment(@Query("scriptSeq") String scriptSeq);
+    Call<String> getScriptComment(@Query("scriptSeq") String scriptSeq,
+                                  @Query("user_seq") String userSeq);
 
     // 글쓰기
     @GET("SCRIPT/writeScript.php")
@@ -72,6 +72,7 @@ public interface APIInterface {
     @GET("SCRIPT/unlike.php")
     Call<String> deleteLike(@Query("user_seq") String userSeq,
                             @Query("script_seq") String scriptSeq);
+
     // 글 공유
     @GET("SCRIPT/share.php")
     Call<String> share(@Query("user_seq") String userSeq,
@@ -81,7 +82,7 @@ public interface APIInterface {
     // 글 공유 취소
     @GET("SCRIPT/unshare.php")
     Call<String> unshare(@Query("user_seq") String userSeq,
-                            @Query("script_seq") String scriptSeq);
+                         @Query("script_seq") String scriptSeq);
 
     // 글 신고
     @GET("SCRIPT/reportScript.php")
@@ -97,6 +98,18 @@ public interface APIInterface {
                                @Query("reported_seq") String reportedSeq,
                                @Query("report_memo") String reportMemo);
 
+    // 댓글 좋아요
+    @GET("COMMENT/commentLikeY.php")
+    Call<String> setCommentLikeOn(@Query("user_seq") String userSeq,
+                                  @Query("comment_seq") String commentSeq,
+                                  @Query("script_seq") String scriptSeq);
+
+
+    // 댓글 좋아요 취소
+    @GET("COMMENT/commentLikeN.php")
+    Call<String> setCommentLikeOff(@Query("user_seq") String userSeq,
+                                   @Query("comment_seq") String commentSeq,
+                                   @Query("script_seq") String scriptSeq);
 
     // 서재 - 내글
     @GET("SCRIPT/myLib.php")

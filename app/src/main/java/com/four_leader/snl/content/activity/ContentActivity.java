@@ -8,6 +8,7 @@ import android.os.Message;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -110,7 +111,113 @@ public class ContentActivity extends AppCompatActivity {
         heartIcon.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(content.isLiked()) {
+                    setContentLikeOff();
+                } else {
+                    setContentLikeOn();
+                }
+            }
+        });
 
+        shareIcon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(content.isBookmarked()) {
+                    if(content.isBookmarked()) {
+                        setContentShareOff();
+                    } else {
+                        setContentShareOn();
+                    }
+                }
+            }
+        });
+    }
+
+    private void setContentLikeOn() {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.addLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                content.setLiked(true);
+                content.setHeartCount(content.getHeartCount() + 1);
+                setContent();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setContentLikeOff() {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.deleteLike(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                content.setLiked(false);
+                content.setHeartCount(content.getHeartCount() - 1);
+                setContent();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setContentShareOn() {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        String userId = preferences.getString("user_id", "");
+        Call<String> call = apiInterface.share(userSeq, scriptCode, userId);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                content.setBookmarked(true);
+                content.setBookmarkCount(content.getBookmarkCount() + 1);
+                setContent();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setContentShareOff() {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.unshare(userSeq, scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                content.setBookmarked(false);
+                content.setBookmarkCount(content.getBookmarkCount() - 1);
+                setContent();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -126,7 +233,7 @@ public class ContentActivity extends AppCompatActivity {
         if(content.isLiked()) {
             heartIcon.setImageResource(R.drawable.ic_heart_on);
         } else {
-            heartIcon.setImageResource(R.drawable.ic_heart_on);
+            heartIcon.setImageResource(R.drawable.ic_heart_off);
         }
 
         if(content.isBookmarked()) {
@@ -137,7 +244,9 @@ public class ContentActivity extends AppCompatActivity {
     }
 
     private void getComments(String code) {
-        Call<String> call = apiInterface.getScriptComment(code);
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.getScriptComment(code, userSeq);
         call.enqueue(new Callback<String>() {
             @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
@@ -154,9 +263,19 @@ public class ContentActivity extends AppCompatActivity {
                         voice.setHeartCount(Integer.parseInt(object.getString("comment_likes")));
                         voice.setFileName(object.getString("comment_file_name"));
                         voice.setWriterSeq(object.getString("user_seq"));
+                        Log.i("ttt", "2");
+                        if(object.getString("likeYn").equals("Y")) {
+                            voice.setHeartClick(true);
+                        } else {
+                            Log.i("ttt", "1");
+                            voice.setHeartClick(false);
+                        }
                         String userName = object.getString("user_nick");
                         if(!object.getString("titleinfo_title").equals("null")) {
                             userName = object.getString("titleinfo_title") + " " + userName;
+                        }
+                        if(userName.equals("null")) {
+                            userName = "탈퇴한 회원입니다";
                         }
                         voice.setWriter(userName);
                         voices.add(voice);
@@ -202,6 +321,11 @@ public class ContentActivity extends AppCompatActivity {
                 }
 
             } else if(String.valueOf(msg.obj).equals("heart")) {
+                if(voices.get(msg.what).isHeartClick()) {
+                    setCommentHeartOff(msg.what);
+                } else {
+                    setCommentHeartOn(msg.what);
+                }
                 voices.get(msg.what).setHeartClick(!voices.get(msg.what).isHeartClick());
             }
             adapter.notifyDataSetChanged();
@@ -222,6 +346,50 @@ public class ContentActivity extends AppCompatActivity {
             startActivity(intent);
         }
     };
+
+    private void setCommentHeartOn(final int pos) {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.setCommentLikeOn(userSeq, voices.get(pos).getCode(), scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                voices.get(pos).setHeartClick(true);
+                voices.get(pos).setHeartCount(voices.get(pos).getHeartCount() + 1);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void setCommentHeartOff(final int pos) {
+        String scriptCode = content.getCode();
+        SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
+        String userSeq = preferences.getString("user_seq", "");
+        Call<String> call = apiInterface.setCommentLikeOff(userSeq, voices.get(pos).getCode(), scriptCode);
+        call.enqueue(new Callback<String>() {
+            @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                voices.get(pos).setHeartClick(false);
+                voices.get(pos).setHeartCount(voices.get(pos).getHeartCount() - 1);
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                call.cancel();
+                Toast.makeText(getApplicationContext(), "서버 연결 실패", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
 
     private void playVoice(String code) {
         playView.setVisibility(View.VISIBLE);

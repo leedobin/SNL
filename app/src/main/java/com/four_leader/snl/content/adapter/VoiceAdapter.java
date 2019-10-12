@@ -20,9 +20,9 @@ import java.util.ArrayList;
 public class VoiceAdapter extends BaseAdapter {
 
     public Context context;
-    public ArrayList<Voice> arrayList;
-    LayoutInflater inflater;
-    Handler btnClickHandler, reportHandler;
+    private ArrayList<Voice> arrayList;
+    private LayoutInflater inflater;
+    private Handler btnClickHandler, reportHandler;
 
     public VoiceAdapter(Context context, ArrayList<Voice> dataList, Handler btnClickHandler, Handler reportHandler) {
         super();
@@ -53,7 +53,7 @@ public class VoiceAdapter extends BaseAdapter {
         ViewHolder holder;
         if (convertView == null) {
             holder = new ViewHolder();
-            convertView = inflater.inflate(R.layout.list_voice, null);
+            convertView = inflater.inflate(R.layout.list_voice, parent);
             convertView.setTag(holder);
         }
 
@@ -78,6 +78,12 @@ public class VoiceAdapter extends BaseAdapter {
             holder.backgroundLayout.setBackgroundColor(Color.parseColor("#E6E8EA"));
         } else {
             holder.backgroundLayout.setBackgroundColor(Color.TRANSPARENT);
+        }
+
+        if(data.isHeartClick()) {
+            holder.heartBtn.setImageResource(R.drawable.ic_heart_on);
+        } else {
+            holder.heartBtn.setImageResource(R.drawable.ic_heart_off);
         }
 
         holder.speakerBtn.setOnClickListener(new View.OnClickListener() {
