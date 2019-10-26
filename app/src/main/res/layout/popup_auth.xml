@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:layout_gravity="center"
     android:gravity="center"
-    android:background="#55252525"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <LinearLayout
@@ -16,25 +16,15 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:padding="15dp"
-        android:gravity="center"
-        android:layout_gravity="center"
         android:background="#ffffff"
         android:orientation="vertical">
 
-        <LinearLayout
-            android:layout_margin="5dp"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="30dp"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:gravity="center"
-                android:layout_gravity="center_vertical"
-                android:text="앱 접근 권한 안내"/>
-
-        </LinearLayout>
+            android:gravity="center"
+            android:layout_gravity="center_vertical"
+            android:text="앱 접근 권한 안내"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -60,7 +50,7 @@
                     android:layout_margin="5dp"
                     android:layout_gravity="center"
                     android:gravity="center_vertical"
-                    android:text="카메라"/>
+                    android:text="녹음"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -68,7 +58,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
                     android:gravity="center_vertical"
-                    android:text="사진을 찍을 때 사용할 거에요!!"/>
+                    android:text="음성 댓글 작성시 사용됩니다."/>
 
             </LinearLayout>
         </LinearLayout>
@@ -96,7 +86,7 @@
                     android:layout_margin="5dp"
                     android:layout_gravity="center"
                     android:gravity="center_vertical"
-                    android:text="카메라"/>
+                    android:text="저장소"/>
 
                 <TextView
                     android:layout_width="match_parent"
@@ -105,81 +95,7 @@
 
                     android:layout_margin="5dp"
                     android:gravity="center_vertical"
-                    android:text="사진을 찍을 때 사용할 거에요!!"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="10dp"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_auth"
-                />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:text="카메라"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-
-                    android:layout_margin="5dp"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:text="사진을 찍을 때 사용할 거에요!!"/>
-
-            </LinearLayout>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_auth"
-                />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
-                    android:layout_gravity="center"
-                    android:gravity="center_vertical"
-                    android:text="카메라"/>
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-
-                    android:layout_margin="5dp"
-                    android:gravity="center_vertical"
-                    android:text="사진을 찍을 때 사용할 거에요!!"/>
+                    android:text="음성 댓글을 저장할 때 사용됩니다."/>
 
             </LinearLayout>
         </LinearLayout>

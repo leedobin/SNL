@@ -18,6 +18,7 @@ import com.four_leader.snl.R;
 import com.four_leader.snl.main.vo.MainContent;
 import com.four_leader.snl.util.APIClient;
 import com.four_leader.snl.util.APIInterface;
+import com.four_leader.snl.util.APIs;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -70,7 +71,7 @@ public class RecordActivity extends AppCompatActivity {
         textView.setText(content.getContent());
 
 
-        upLoadServerUri = "http://13.209.4.115/SNL/UPLOAD/UploadToServer.php";
+        upLoadServerUri = APIs.baseURL + "/UPLOAD/UploadToServer.php";
 
         closeViewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -116,10 +117,8 @@ public class RecordActivity extends AppCompatActivity {
             recorder.start();
             Toast.makeText(this, "start Record", Toast.LENGTH_LONG).show();
         } catch (IllegalStateException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
-// TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

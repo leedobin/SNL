@@ -4,8 +4,10 @@ import android.app.Application;
 
 public class APIs extends Application {
 
-    public static String sendMail = "http://13.209.4.115/SNL/sendMail.php";
-    public static String idcheck = "http://13.209.4.115/SNL/USER/idcheck.php";
-    public static String signup = "http://13.209.4.115/SNL/USER/signup.php";
-    public static String nicknamecheck = "http://13.209.4.115/SNL/USER/nicknamecheck.php";
+    public static String baseURL = "https://snltest.run.goorm.io/SNL/SNL";
+
+    public static String sendMail = baseURL + "/sendMail.php";
+    public static String idcheck = baseURL + "/USER/idcheck.php";
+    public static String signup = baseURL + "/USER/signup.php";
+    public static String nicknamecheck = baseURL + "/USER/nicknamecheck.php";
 }

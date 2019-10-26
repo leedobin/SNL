@@ -10,6 +10,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -51,7 +53,8 @@ public class ContainerActivity extends AppCompatActivity {
     SettingFragment settingFragment;
     APIInterface apiInterface = APIClient.getClient().create(APIInterface.class);
 
-    TextView mainBtn, libraryBtn, settingBtn;
+    ImageButton mainBtn, libraryBtn, settingBtn;
+    ImageView noticeImg;
     RelativeLayout noticeBtn;
     LinearLayout writeBtn;
     public static ArrayList<Category> myAllCategories;
@@ -103,7 +106,7 @@ public class ContainerActivity extends AppCompatActivity {
     private void checkPushPermission() {
         SharedPreferences preferences = getSharedPreferences("pref", MODE_PRIVATE);
         String agreement_push_date = preferences.getString("agreement_push", "x");
-        if(agreement_push_date.equals("x")) {
+        if (agreement_push_date.equals("x")) {
             Intent intent = new Intent(ContainerActivity.this, PushAuthActivity.class);
             startActivityForResult(intent, 100);
         } else {
@@ -125,6 +128,7 @@ public class ContainerActivity extends AppCompatActivity {
         noticeBtn = findViewById(R.id.noticeBtn);
         settingBtn = findViewById(R.id.settingBtn);
         writeBtn = findViewById(R.id.writeBtn);
+        noticeImg = findViewById(R.id.noticeImg);
 
         writeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -177,6 +181,8 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void getMainPage() {
+        allBottomBtnOff();
+        mainBtn.setImageResource(R.drawable.ic_home_on);
         writeBtn.setVisibility(View.VISIBLE);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -184,6 +190,8 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void getLibraryPage() {
+        allBottomBtnOff();
+        libraryBtn.setImageResource(R.drawable.ic_book_on);
         writeBtn.setVisibility(View.VISIBLE);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -191,6 +199,8 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void getNoticePage() {
+        allBottomBtnOff();
+        noticeImg.setImageResource(R.drawable.ic_bell_on);
         writeBtn.setVisibility(View.GONE);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -198,10 +208,19 @@ public class ContainerActivity extends AppCompatActivity {
     }
 
     private void getSettingPage() {
+        allBottomBtnOff();
+        settingBtn.setImageResource(R.drawable.ic_setting_on);
         writeBtn.setVisibility(View.GONE);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.frameLayout, settingFragment).commit();
+    }
+
+    private void allBottomBtnOff() {
+        mainBtn.setImageResource(R.drawable.ic_home_off);
+        libraryBtn.setImageResource(R.drawable.ic_book_off);
+        noticeImg.setImageResource(R.drawable.ic_bell_off);
+        settingBtn.setImageResource(R.drawable.ic_setting_off);
     }
 
 
@@ -218,7 +237,7 @@ public class ContainerActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK) { // 권한 허가시 권한 정보 변경
                 Toast.makeText(getApplicationContext(), time + "에\npush 알림 수신에 동의하셨습니다.", Toast.LENGTH_SHORT).show();
                 setPushPermission("y" + time2);
-            } else if(resultCode == RESULT_CANCELED){ // 권한 거절시 권한 정보 변경
+            } else if (resultCode == RESULT_CANCELED) { // 권한 거절시 권한 정보 변경
                 Toast.makeText(getApplicationContext(), "알림 수신에 거절하셨습니다.", Toast.LENGTH_SHORT).show();
                 setPushPermission("n" + time2);
             }

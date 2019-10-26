@@ -218,7 +218,6 @@ public class WriteActivity extends AppCompatActivity {
                 String result = response.body().toString();
 
                 try {
-
                     JSONObject resultObj = new JSONObject(result);
                     JSONArray report = resultObj.getJSONArray("REPORT");
 
@@ -260,7 +259,7 @@ public class WriteActivity extends AppCompatActivity {
         int categorySeq = -1;
         for(int i=0; i<myAllCategories.size(); i++) {
             if(myAllCategories.get(i).getName().equals(categorySpinner2.getSelectedItem())) {
-                categorySeq = i;
+                categorySeq = Integer.parseInt(myAllCategories.get(i).getSeq());
             }
         }
         if(categorySeq == -1) {

@@ -40,22 +40,23 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal">
 
-        <TextView
+        <ImageButton
             android:id="@+id/mainBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="글"
-            android:textStyle="bold" />
+            android:src="@drawable/ic_home_on" />
 
-        <TextView
+        <ImageButton
             android:id="@+id/libraryBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:gravity="center"
-            android:text="서재" />
+            android:src="@drawable/ic_book_off" />
 
         <RelativeLayout
             android:id="@+id/noticeBtn"
@@ -63,11 +64,12 @@
             android:layout_height="match_parent"
             android:layout_weight="1">
 
-            <TextView
-                android:id="@+id/noticeText"
+            <ImageView
+                android:id="@+id/noticeImg"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:src="@drawable/ic_bell_off"
                 android:text="알림" />
 
             <ImageView
@@ -75,17 +77,20 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
                 android:layout_marginTop="8dp"
-                android:layout_toRightOf="@+id/noticeText"
+                android:layout_toRightOf="@+id/noticeImg"
                 android:src="@drawable/circle_notice" />
         </RelativeLayout>
 
-        <TextView
+        <ImageButton
             android:id="@+id/settingBtn"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
+            android:background="@android:color/transparent"
             android:gravity="center"
+            android:src="@drawable/ic_setting_off"
             android:text="관리" />
+
     </LinearLayout>
 
 </RelativeLayout>

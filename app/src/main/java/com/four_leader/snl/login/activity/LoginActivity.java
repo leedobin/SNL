@@ -32,7 +32,6 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button signupBtn, Loginbtn;
     private EditText editEmail, editPwd;
-    private CheckBox AutoLoginBtn;
     APIInterface apiInterface;
 
     @Override
@@ -44,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
         editEmail = findViewById(R.id.editEmail);
         editPwd = findViewById(R.id.editPwd);
-        AutoLoginBtn = findViewById(R.id.AutoLoginBtn);
 
         SharedPreferences pref = getSharedPreferences("pref", MODE_PRIVATE);
         editEmail.setText(pref.getString("user_id", ""));
@@ -107,10 +105,7 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("user_id", email);
                     editor.putString("user_pw", pwd);
                     editor.putString("agreement_push", obj.getString("agreement_push"));
-
-                    if(AutoLoginBtn.isChecked()) {
-                        editor.putBoolean("auto_login", true);
-                    }
+                    editor.putBoolean("auto_login", true);
                     editor.commit();
                     getUserCategoris();
 
